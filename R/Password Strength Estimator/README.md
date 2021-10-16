@@ -16,5 +16,5 @@ In addition, in case you have thought of a password of your own, you can use the
 # Dependencies
 <code>V8</code>: Google's open source JavaScript Engine for R.
 
-# Main functions available
+# Functions
 <code>password_score</code>: evaluates a given password and classifies it from "Very Weak" to "Very Strong".
