@@ -9,7 +9,7 @@ paper and presentation were made available at the 25th USENIX Security Symposium
 <a href="https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler">HERE</a>).
 
 # Purpose of this program
-Password managers, which usually have incorporated a password generator, are getting increasingly popular. However, if you would like additional services, such as assessing the strength of your current passwords, you are requested to pay extra. This program allows you to export your passwords and through the functions available identify any weak password that you might have stored.
+Password managers, which usually have incorporated a password generator, are getting increasingly popular. However, if you would like additional services, such as assessing the strength of your current passwords, you are requested to pay extra. This program allows you to import into R your passwords (e.g., through <code>.csv</code>) and then the functions available identify any weak password that you might have stored (examples of how to run the functions are provided in the program).
 
 In addition, in case you have thought of a password of your own, you can use these functions to determine whether it is deemed as safe or not.
 
