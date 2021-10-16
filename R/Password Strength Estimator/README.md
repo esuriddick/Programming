@@ -18,9 +18,13 @@ In addition, in case you have thought of a password of your own, you can use the
 
 # Functions
 <code>password_score</code>: evaluates a given password and classifies it from "Very Weak" to "Very Strong".
+
 <code>password_suggestion</code>: attempts to provide a comment in how to improve the password.
+
 <code>detect_duplicates</code>: identifies duplicated.
+
 <code>detect_empty</code>: identifies empty passwords.
+
 <code>HTTP_Protocol</code>: identifies whether the website associated with the password uses the "HTTP" or "HTTPS" protocols.
 
 # Additional information
