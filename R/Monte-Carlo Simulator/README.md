@@ -6,25 +6,15 @@ As presented in Investopedia (<a href="https://www.investopedia.com/terms/m/mont
 A <code>Monte Carlo simulation</code> can be used to tackle a range of problems in virtually every field such as finance, engineering, supply chain, and science. It is also referred to as a multiple probability simulation."
 
 # Purpose of this program
-Password managers, which usually have incorporated a password generator, are getting increasingly popular. However, if you would like additional services, such as assessing the strength of your current passwords, you are requested to pay extra. This program allows you to import into R your passwords (e.g., through <code>.csv</code>) and then the functions available identify any weak password that you might have stored (examples of how to run the functions are provided in the program).
-
-In addition, in case you have thought of a password of your own, you can use these functions to determine whether it is deemed as safe or not.
+Provide the basis to run a Monte-Carlo simulation. Normal distributions are used in both functions, which are easily changed to another distribution that suits your needs (see for other distributions: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html).
 
 # Dependencies
-<code>V8</code>: Google's open source JavaScript and WebAssembly engine for R. The information on this package can be found in: https://cran.r-project.org/web/packages/V8/index.html
+None.
 
 # Functions
-<code>password_score</code>: evaluates a given password and classifies it from "Very Weak" to "Very Strong".
+<code>generate.path</code>: based on the initial value, it applies either a cumulative product or cumulative sum process in order to determine what the final value would be after "x" timesteps. By default, it assumes a cumulative product process, since the variable typically modelled for asset evaluation is returns, which is in percentage.
 
-<code>password_suggestion</code>: attempts to provide a comment in how to improve the password.
-
-<code>detect_duplicates</code>: identifies duplicated.
-
-<code>detect_empty</code>: identifies empty passwords.
-
-<code>HTTP_Protocol</code>: identifies whether the website associated with the password uses the "HTTP" or "HTTPS" protocols.
+<code>generate.values</code>: provides "x" amount of outcomes according to the underlying statistical distribution.
 
 # Additional information
-Want to check if any of your e-mails have been compromised? Check out this page: https://haveibeenpwned.com/
-
-Want to check if any of your passwords have been compromised? Check out this page: https://haveibeenpwned.com/Passwords
+None.
