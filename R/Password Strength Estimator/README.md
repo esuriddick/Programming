@@ -14,7 +14,15 @@ Password managers, which usually have incorporated a password generator, are get
 In addition, in case you have thought of a password of your own, you can use these functions to determine whether it is deemed as safe or not.
 
 # Dependencies
-<code>V8</code>: Google's open source JavaScript Engine for R.
+<code>V8</code>: Google's open source JavaScript and WebAssembly engine for R. The information on this package can be found in: https://cran.r-project.org/web/packages/V8/index.html
 
 # Functions
 <code>password_score</code>: evaluates a given password and classifies it from "Very Weak" to "Very Strong".
+<code>password_suggestion</code>: attempts to provide a comment in how to improve the password.
+<code>detect_duplicates</code>: identifies duplicated.
+<code>detect_empty</code>: identifies empty passwords.
+<code>HTTP_Protocol</code>: identifies whether the website associated with the password uses the "HTTP" or "HTTPS" protocols.
+
+# Additional information
+Want to check if any of your e-mails have been compromised? Check out this page: https://haveibeenpwned.com/
+Want to check if any of your passwords have been compromised? Check out this page: https://haveibeenpwned.com/Passwords
