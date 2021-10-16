@@ -29,4 +29,5 @@ In addition, in case you have thought of a password of your own, you can use the
 
 # Additional information
 Want to check if any of your e-mails have been compromised? Check out this page: https://haveibeenpwned.com/
+
 Want to check if any of your passwords have been compromised? Check out this page: https://haveibeenpwned.com/Passwords
