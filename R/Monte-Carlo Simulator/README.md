@@ -1,14 +1,9 @@
 # What is Monte-Carlo simulation?
 As presented in Investopedia (<a href="https://www.investopedia.com/terms/m/montecarlosimulation.asp">HERE</a>):
 
-"Monte Carlo simulations are used to model the probability of different outcomes in a process that cannot easily be predicted due to the intervention of random variables. It is a technique used to understand the impact of risk and uncertainty in prediction and forecasting models.
+"<code>Monte Carlo simulations</code> are used to model the probability of different outcomes in a process that cannot easily be predicted due to the intervention of random variables. It is a technique used to understand the impact of risk and uncertainty in prediction and forecasting models.
 
-A Monte Carlo simulation can be used to tackle a range of problems in virtually every field such as finance, engineering, supply chain, and science. It is also referred to as a multiple probability simulation."
-
-# Who is the original creator?
-<code>Dropbox Inc.</code> created and made available the underlying code as a low-budget password strength estimator. If you are curious on how it was developed, the underlying
-paper and presentation were made available at the 25th USENIX Security Symposium (available 
-<a href="https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler">HERE</a>).
+A <code>Monte Carlo simulation</code> can be used to tackle a range of problems in virtually every field such as finance, engineering, supply chain, and science. It is also referred to as a multiple probability simulation."
 
 # Purpose of this program
 Password managers, which usually have incorporated a password generator, are getting increasingly popular. However, if you would like additional services, such as assessing the strength of your current passwords, you are requested to pay extra. This program allows you to import into R your passwords (e.g., through <code>.csv</code>) and then the functions available identify any weak password that you might have stored (examples of how to run the functions are provided in the program).
