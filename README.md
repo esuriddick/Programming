@@ -6,6 +6,7 @@ The following work is currently available within this repository:
 1. <b>R</b>
    * Password Strength Estimator (zxcvbn)
    * Monte-Carlo Simulator
+   * Transition Matrix
 
 2. <b>Python</b>
    * Soon available.
