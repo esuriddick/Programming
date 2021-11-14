@@ -4,8 +4,8 @@ The aim of this repository is to share some of the work that I have developed in
 # Index
 The following work is currently available within this repository:
 1. <b>R</b>
-   * Password Strength Estimator (zxcvbn)
    * Monte-Carlo Simulator
+   * Password Strength Estimator (zxcvbn)
    * Transition Matrix
 
 2. <b>Python</b>
