@@ -1,6 +1,6 @@
-#/******************************************************************/#
+#/***********************************************************************************************/#
 #/ TRANSITION MATRIX - DEFINITION
-#/******************************************************************/#
+#/***********************************************************************************************/#
 MissingConversion <- function(x){
   if(is.na(x)){
     return('Other') #Another classification may be assigned to NAs
@@ -36,9 +36,9 @@ TransitionMatrix <- function(db, start_var, end_var, convertNA = TRUE){
   return(transition.matrix <<- transition.matrix)
 }
 
-#/******************************************************************/#
+#/***********************************************************************************************/#
 #/ TRANSITION MATRIX - DEPICTION
-#/******************************************************************/#
+#/***********************************************************************************************/#
 #Variables indicating the observation's segment/status in each point in time
 #(Sorted in an increasing order - from oldest to latest)
 segments <- c('segment_Y1',
