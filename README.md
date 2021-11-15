@@ -7,6 +7,7 @@ The following work is currently available within this repository:
    * Monte-Carlo Simulator
    * Password Strength Estimator (zxcvbn)
    * Transition Matrix
+   * Tree Diagram
 
 2. <b>Python</b>
    * Soon available.
