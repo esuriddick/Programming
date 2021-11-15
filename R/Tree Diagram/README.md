@@ -5,4 +5,16 @@ A <code>(probability) tree diagram</code> allows a person to better assess the p
 Provide the basis to easily create a custom tree diagram within R, which can be exported as an image.
 
 # Dependencies
-<code><a href="https://cran.r-project.org/web/packages/data.tree/">data.tree</a></code>: this library, including its dependencies, are required to properly create a tree diagram.
+<code><a href="https://cran.r-project.org/web/packages/data.tree/">data.tree</a></code>: this library, including its dependencies, are required to properly create the tree diagram.
+
+# Functions
+<code>AddNode</code>: allows to create a new node on the tree diagram. There are 7 arguments to this function, namely:
+* teste
+* teste
+parentnode = NA, 
+                   name,
+                   prob = NA,
+                   tree_level,
+                   node_type,
+                   overall_prob = FALSE,
+                   prob_rank = NA
