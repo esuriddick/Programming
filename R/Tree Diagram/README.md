@@ -9,7 +9,7 @@ Provide the basis to easily create a custom tree diagram within R, which can be 
 
 # Functions
 <code>AddNode</code>: allows to create a new node on the tree diagram. There are 7 arguments to this function, namely:
-* teste
+* <code>parentnode</code>: identifies the full name of the node from which the new node will start from. The value for <code>parentnode</code> should be <code>NA</code> only when we are adding a root node to the tree.
 * teste
 parentnode = NA, 
                    name,
