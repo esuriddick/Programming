@@ -4,15 +4,6 @@
 #Load library (to install, write in console: install.packages('data.tree', dependencies = TRUE))
 library('data.tree')
 
-#Concepts
-#'pathString': Name of the node and parents separated by a '/'
-#'prob': Probability underlying the node
-#'tree_level': Level on the tree with the node ('0' corresponds to the root)
-#'tree_group': Parent node's name
-#'node_type': Whether the node is the root ('start'), intermediate ('decision_node') or last node ('terminal')
-#'overall_prob': Intersection probability
-#'prob_rank': Order of the intersection probabilities (rank of 1 is the highest)
-
 #Create empty dataframe
 data <- data.frame(matrix(ncol = 7, nrow = 0))
 colnames(data) <- c('pathString',
