@@ -143,42 +143,42 @@ AddNode(parentnode = 'weather',
 #Define level 2
 #/***********************************************************************************************/#
 AddNode(parentnode = 'weather/no rain',
-        name = '95บ F',
+        name = '95ยบ F',
         prob = 0.25,
         tree_level = 2,
         node_type = 'decision_node',
         overall_prob = TRUE)
 
 AddNode(parentnode = 'weather/no rain',
-        name = '85บ F',
+        name = '85ยบ F',
         prob = 0.55,
         tree_level = 2,
         node_type = 'decision_node',
         overall_prob = TRUE)
 
 AddNode(parentnode = 'weather/no rain',
-        name = '75บ F',
+        name = '75ยบ F',
         prob = 0.15,
         tree_level = 2,
         node_type = 'decision_node',
         overall_prob = TRUE)
 
 AddNode(parentnode = 'weather/no rain',
-        name = '65บ F',
+        name = '65ยบ F',
         prob = 0.05,
         tree_level = 2,
         node_type = 'decision_node',
         overall_prob = TRUE)
 
 AddNode(parentnode = 'weather/rain',
-        name = '95บ F',
+        name = '95ยบ F',
         prob = 0.05,
         tree_level = 2,
         node_type = 'decision_node',
         overall_prob = TRUE)
 
 AddNode(parentnode = 'weather/rain',
-        name = '85บ F',
+        name = '85ยบ F',
         prob = 0.25,
         tree_level = 2,
         node_type = 'decision_node',
@@ -186,14 +186,14 @@ AddNode(parentnode = 'weather/rain',
         prob_rank = NA)
 
 AddNode(parentnode = 'weather/rain',
-        name = '75บ F',
+        name = '75ยบ F',
         prob = 0.35,
         tree_level = 2,
         node_type = 'decision_node',
         overall_prob = TRUE)
 
 AddNode(parentnode = 'weather/rain',
-        name = '65บ F',
+        name = '65ยบ F',
         prob = 0.35,
         tree_level = 2,
         node_type = 'decision_node',
@@ -201,50 +201,50 @@ AddNode(parentnode = 'weather/rain',
 
 #Define level 3
 #/***********************************************************************************************/#
-AddNode(parentnode = 'weather/no rain/95บ F',
+AddNode(parentnode = 'weather/no rain/95ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE)
 
-AddNode(parentnode = 'weather/no rain/85บ F',
+AddNode(parentnode = 'weather/no rain/85ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE)
 
-AddNode(parentnode = 'weather/no rain/75บ F',
+AddNode(parentnode = 'weather/no rain/75ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE)
 
-AddNode(parentnode = 'weather/no rain/65บ F',
+AddNode(parentnode = 'weather/no rain/65ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE)
 
-AddNode(parentnode = 'weather/rain/95บ F',
+AddNode(parentnode = 'weather/rain/95ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE)
 
-AddNode(parentnode = 'weather/rain/85บ F',
+AddNode(parentnode = 'weather/rain/85ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE,
         prob_rank = NA)
 
-AddNode(parentnode = 'weather/rain/75บ F',
+AddNode(parentnode = 'weather/rain/75ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
         overall_prob = FALSE)
 
-AddNode(parentnode = 'weather/rain/65บ F',
+AddNode(parentnode = 'weather/rain/65ยบ F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
