@@ -1,5 +1,5 @@
 # What is a (probability) tree diagram?
-A <code>(probability) tree diagram</code> allows a person to better assess the probabilities underlying random events that happen in a pre-defined time sequence. Two important features underlying the probabilities in the nodes of the tree are: i) conditional probabilities (<code>Bayes Theorem</code>); and ii) the fact that the multiplication of the probabilities along the nodes provides the probability of the intersection of each event along the nodes.
+A <code>(probability) tree diagram</code> allows a person to better assess the probabilities underlying random events that happen in a pre-defined time sequence. Two important features underlying the probabilities in the nodes of the tree are: i) conditional probabilities (<code>Bayes Theorem</code>); and ii) the fact that the multiplication of the probabilities along the nodes provides the probability of the intersection of the events along the nodes.
 
 # Purpose of this program
 Provide the basis to easily create a custom tree diagram within R, which can be exported as an image.
@@ -16,4 +16,8 @@ Provide the basis to easily create a custom tree diagram within R, which can be 
 * <code>node_type</code>: indicates whether the new node will be <code>start</code> (root node), <code>decision_node</code> (intermediate node) or <code>terminal</code> (final node). It should be noted that for every last node, a node named <code>overall</code> should be created and classified as a terminal node. As the number of levels to be displayed in the tree are customisable, you may hide these "artificial" nodes in the final tree diagram (see the example in the code for a better understanding).
 * <code>overall_prob</code>: it should always be defined as <code>FALSE</code> for the nodes classified as <code>start</code> or <code>terminal</code>.
 * <code>prob_rank</code>: determines the ranking of the probabilities (e.g., which one is the highest, second highest and so on). It should always be set to <code>NA</code>. In the function <code>MakeTree</code>, this variable is automatically filled for the <code>terminal</code> nodes.
+
 <code>MakeTree</code>:
+
+# Additional information
+The code created is based on the explanation and example provided in <a href="https://www.datakwery.com/project/tree/">DataKwery</a>, where one of the authors explains how to use the library data.tree with a dataframe with the purpose of drawing a tree diagram.
