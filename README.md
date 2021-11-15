@@ -10,7 +10,10 @@ The following work is currently available within this repository:
    * Tree Diagram
 
 2. <b>Python</b>
-   * Soon available.
+   * Available soon.
+
+3. <b>SAS</b>
+   * Available soon.
 
 # License
 All of the work shared in this repository is under the <a href ="https://choosealicense.com/licenses/gpl-3.0/">GNU General Public License v3.0</a>.
