@@ -75,7 +75,7 @@ AddNode <- function(parentnode = NA,
 }
 
 MakeTree <- function(df, display_level = NULL, show_rank = FALSE, direction = 'LR'){
-  #Direction can be: i) left to right ('LR'); ii) right to left ('RL'); or iii) top-down ('TD')
+  #Direction can be: i) left to right ('LR'); ii) right to left ('RL'); or iii) top to bottom ('TB')
   
   #Clean variable 'overall_prob' from nodes that are not terminal
   df[df$node_type != 'terminal', 6] <- NA
@@ -204,51 +204,43 @@ AddNode(parentnode = 'weather/rain',
 AddNode(parentnode = 'weather/no rain/95º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 AddNode(parentnode = 'weather/no rain/85º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 AddNode(parentnode = 'weather/no rain/75º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 AddNode(parentnode = 'weather/no rain/65º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 AddNode(parentnode = 'weather/rain/95º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 AddNode(parentnode = 'weather/rain/85º F',
         name = 'overall',
         tree_level = 3,
         node_type = 'terminal',
-        overall_prob = FALSE,
         prob_rank = NA)
 
 AddNode(parentnode = 'weather/rain/75º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 AddNode(parentnode = 'weather/rain/65º F',
         name = 'overall',
         tree_level = 3,
-        node_type = 'terminal',
-        overall_prob = FALSE)
+        node_type = 'terminal')
 
 #/***********************************************************************************************/#
 #/ TREE DIAGRAM - PLOT
