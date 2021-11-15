@@ -17,7 +17,11 @@ Provide the basis to easily create a custom tree diagram within R, which can be 
 * <code>overall_prob</code>: it should always be defined as <code>FALSE</code> for the nodes classified as <code>start</code> or <code>terminal</code>.
 * <code>prob_rank</code>: determines the ranking of the probabilities (e.g., which one is the highest, second highest and so on). It should always be set to <code>NA</code>. In the function <code>MakeTree</code>, this variable is automatically filled for the <code>terminal</code> nodes.
 
-<code>MakeTree</code>:
+<code>MakeTree</code>: draws a tree diagram based on 4 arguments, namely:
+* <code>df</code>: the dataframe with the data created according to the function <code>AddNode</code>. By default, the value assigned in the code to this dataframe is <code>data</code>.
+* <code>display_level</code>: the amount of levels of the tree to be displayed. By default, the maximum available number of levels are considered (<code>max(data$tree_level)</code>).
+* <code>show_rank</code>: whether to show the ranking of the probabilities underlying the intersection of the events (that is, the probability of reaching a specific <code>overall</code> node).
+* <code>direction</code>: whether to draw the tree diagram from left to right (<code>'LR'</code>), right to left (<code>'RL'</code>) or from top to bottom (<code>'TB'</code>). In order to draw from top to bottom, it does not really matter what you write, as long as you do not write <code>'LR'</code> or <code>'RL'</code>.
 
 # Additional information
-The code created is based on the explanation and example provided in <a href="https://www.datakwery.com/project/tree/">DataKwery</a>, where one of the authors explains how to use the library data.tree with a dataframe with the purpose of drawing a tree diagram.
+The code created is based on the explanation and example provided in <a href="https://www.datakwery.com/project/tree/">DataKwery</a>, where one of the authors explains how to use the library data.tree with a dataframe for the purpose of drawing a tree diagram.
