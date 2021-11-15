@@ -1,5 +1,5 @@
 # Objective
-The aim of this repository is to share some of the work that I have developed in different programming languages (R, Python, etc.).
+The aim of this repository is to share some of the work that I have developed in different programming languages (R, Python, etc.) that may be useful for educational or professional purposes.
 
 # Index
 The following work is currently available within this repository:
