@@ -92,7 +92,7 @@ MakeTree <- function(df, display_level = NULL, show_rank = FALSE, direction = 'L
   
   #Tree configuration
   GetEdgeLabel <- function(node) switch(node$node_type, node$prob)
-  GetNodeShape <- function(node) switch(node$node_type, start = "box", node_decision = "circle", terminal = "none")
+  GetNodeShape <- function(node) switch(node$node_type, start = "box", decision_node = "circle", terminal = "none")
   GetNodeLabel <- function(node) switch(node$node_type, 
                                         terminal = ifelse(show_rank  == TRUE, paste0("Prob: ", node$overall_prob,"\nRank: ", node$prob_rank),
                                                           paste0("Prob: ", node$overall_prob)),
