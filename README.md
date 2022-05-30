@@ -10,7 +10,7 @@ The following work is currently available within this repository:
    * Tree Diagram
 
 2. <b>Python</b>
-   * Available soon.
+   * Spheres of Power and Might Character Generator (D&D 5th Edition)
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
