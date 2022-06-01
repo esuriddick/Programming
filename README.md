@@ -11,6 +11,7 @@ The following work is currently available within this repository:
 
 2. <b>Python</b>
    * Spheres of Power and Might Character Generator (D&D 5th Edition)
+   * Python Data Science Cheat Sheet
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
