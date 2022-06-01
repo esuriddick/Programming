@@ -10,8 +10,9 @@ The following work is currently available within this repository:
    * Tree Diagram
 
 2. <b>Python</b>
-   * Spheres of Power and Might Character Generator (D&D 5th Edition)
    * Python Data Science Cheat Sheet
+   * Spheres of Power and Might Character Generator (D&D 5th Edition)
+   * Modern Portfolio Theory (does not include the Capital Market Line) (it should be highlighted that most of the code was made according to the following article: https://www.kenwuyang.com/en/post/portfolio-optimization-with-python/#libraries-and-modules)
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
