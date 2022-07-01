@@ -730,3 +730,7 @@ ttk.Button(tab6, text = "Generate the PDF file", command = Button_Generate_PDF).
 ##APPLICATION
 root.mainloop()
 #----------------------------------------------------------------------------#
+
+#----------------------------------------------------------------------------#
+#COMPILATION
+#!pyinstaller --clean --noconsole --onefile Spheres_5th_Edition_Application.py
