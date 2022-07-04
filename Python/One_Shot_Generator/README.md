@@ -1,5 +1,5 @@
 # Purpose of this program
-Creation of a simple calculator. For VERY large results, the calculator might become unresponsive.
+Generate a random and very basic framework for a D&D one-shot campaign.
 
 # Dependencies
 None.
