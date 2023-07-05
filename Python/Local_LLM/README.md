@@ -3,14 +3,14 @@ Allow you to make use of Large Language Models (LLMs) for private and/or work re
 
 # Requirements
 All of the requirements are listed at the start of the script, including the version on which the script was tested, namely:
-* pip install gpt4all==0.3.4 (version used)
-* pip install langchain==0.0.205 (version used)
-* pip install docx2txt==0.8 (version used)
-* pip install pypdf==3.11.0 (version used)
-* pip install transformers==4.30.2 (version used)
-* pip install faiss-cpu==1.7.4 (version used)
-* pip install -U sentence-transformers==2.2.2 (version used)
-* pip install -U spacy==3.5.3 (version used)
+* pip install gpt4all==0.3.4
+* pip install langchain==0.0.205
+* pip install docx2txt==0.8
+* pip install pypdf==3.11.0
+* pip install transformers==4.30.2
+* pip install faiss-cpu==1.7.4
+* pip install -U sentence-transformers==2.2.2
+* pip install -U spacy==3.5.3
 * python -m spacy download en_core_web_md
 
 # Large Language Model
