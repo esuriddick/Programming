@@ -2,7 +2,16 @@
 Allow you to make use of Large Language Models (LLMs) for private and/or work related purposes. The only time this script ever requires Internet is at first launch, when it creates a folder to store all the models required to run properly. Other than the LLM itself, the other two models that it will download is a Tokenizer ("gpt2") and a sentence-transformers model ("all-MiniLM-L6-v2").
 
 # Requirements
-All of the requirements are listed at the start of the script, including the version on which the script was tested.
+All of the requirements are listed at the start of the script, including the version on which the script was tested, namely:
+* pip install gpt4all==0.3.4 (version used)
+* pip install langchain==0.0.205 (version used)
+* pip install docx2txt==0.8 (version used)
+* pip install pypdf==3.11.0 (version used)
+* pip install transformers==4.30.2 (version used)
+* pip install faiss-cpu==1.7.4 (version used)
+* pip install -U sentence-transformers==2.2.2 (version used)
+* pip install -U spacy==3.5.3 (version used)
+* python -m spacy download en_core_web_md
 
 # Large Language Model
 The script makes use of GPT4All ecosystem, meaning that you can make use of all of the models provided in their <a href = "https://gpt4all.io/index.html">page</a>. These models should be able to perform in your work PC/laptop, and they only make use of your CPU. By default, the model that the script uses is WizardLM-7B (trained by Microsoft and Peking University), but you can change the model that you want to use by changing the variable _model_name_.
