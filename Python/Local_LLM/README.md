@@ -7,6 +7,18 @@ The script makes use of GPT4All ecosystem, meaning that you can make use of all 
 Limitations of the model _per se_ cannot be surpassed by changing some of the parameters, such as _context_window_, but I have left it coded in the script in case one day it becomes useful.
 
 # Functions
+* GUI based on Python's tkinter
+
+xxx
+* Chat back and forth with the AI
+* Save the chat to continue later or to recall the messages that were exchanged
+* An audio cue is played when the AI answers to you.
+* Provide a document in either .pdf, .docx or .txt to be summarized (in bullet points form).
+
+I was unhappy with how slow Abstractive Text Summarization was and how sometimes the answer provided would be cut-off. Thus, by default, a summary is first created through an Extractive Text Summarization technique. Afterwards, this summary is provided to the LLM to perform Abstractive Text Summarization.
+
+If you would like to only use Abstractive Text Summarization, you just have to change the variable _extractive_text_summarization_ to 0.
+* xxx
 
 # Note of caution
 Most LLMs as of today (05.07.2023) have a maximum limit of 2048 tokens when talking with them (i.e., considering both your messages and the ones from the model), meaning that, after a while, it will reach a point where the LLM is unable to generate a response, since it has reached its limit. Therefore, it is advised to clear the chat when changing subject. A smaller chat will also lead to faster responses by the LLM, since it has less inputs to consider when processing an answer.
