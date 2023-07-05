@@ -12,9 +12,10 @@ The following work is currently available within this repository:
 2. <b>Python</b>
    * Python Data Science Cheat Sheet
    * Spheres of Power and Might Character Generator (D&D 5th Edition)
-   * Modern Portfolio Theory (it should be highlighted that most of the code was made based on the following article: https://www.kenwuyang.com/en/post/portfolio-optimization-with-python/#libraries-and-modules)
+   * Modern Portfolio Theory (mostly based on the following article: https://www.kenwuyang.com/en/post/portfolio-optimization-with-python/#libraries-and-modules)
    * Calculator
    * Killer ranking model (for videogame Dead by Daylight)
+   * Local / Offline AI
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
