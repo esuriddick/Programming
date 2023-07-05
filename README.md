@@ -15,7 +15,7 @@ The following work is currently available within this repository:
    * Modern Portfolio Theory (mostly based on the following article: https://www.kenwuyang.com/en/post/portfolio-optimization-with-python/#libraries-and-modules)
    * Calculator
    * Killer ranking model (for videogame Dead by Daylight)
-   * Local / Offline AI
+   * Local / Offline Large Language Model
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
