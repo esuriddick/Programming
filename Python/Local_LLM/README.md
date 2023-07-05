@@ -21,8 +21,8 @@ Limitations of the model _per se_ cannot be surpassed by changing some of the pa
 # Functions
 * GUI based on Python's tkinter
 
-<img src = "https://github.com/esuriddick/Programming/blob/main/Python/Local_LLM/Preview_01.jpg"></img>
-<img src = "https://github.com/esuriddick/Programming/blob/main/Python/Local_LLM/Preview_02.jpg"></img>
+<img src = "https://github.com/esuriddick/Programming/blob/main/Python/Local_LLM/Preview_UI_01.jpg"></img>
+<img src = "https://github.com/esuriddick/Programming/blob/main/Python/Local_LLM/Preview_UI_02.jpg?raw=true"></img>
 * Chat back and forth with the AI
 
 Please bear in mind that the knowledge of the LLM is limited to the information it was trained on, meaning that it will not be aware of recent events.
