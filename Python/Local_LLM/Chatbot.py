@@ -1044,7 +1044,7 @@ def refresh_chat_history(prompt, start = 1):
         chatWindow.see(END)
 
 def answer_processing(answer):
-    answer = answer.replace("```", "\n```\n")
+    #answer = answer.replace("```", "\n```\n")
     return(answer)
 
 def menubar_block(block = 1):
