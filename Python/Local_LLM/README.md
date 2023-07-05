@@ -1,5 +1,5 @@
 # Purpose of this program
-Allow you to make use of Large Language Models for private and/or work related purposes. The only time this script ever requires Internet is at first launch, when it creates a folder to store all the models required to run properly. Other than the LLM itself, the other two models that it will download is a Tokenizer ("gpt2") and a sentence-transformers model ("all-MiniLM-L6-v2").
+Allow you to make use of Large Language Models (LLMs) for private and/or work related purposes. The only time this script ever requires Internet is at first launch, when it creates a folder to store all the models required to run properly. Other than the LLM itself, the other two models that it will download is a Tokenizer ("gpt2") and a sentence-transformers model ("all-MiniLM-L6-v2").
 
 # Large Language Model
 The script makes use of GPT4All ecosystem, meaning that you can make use of all of the models provided in their <a href = "https://gpt4all.io/index.html">page</a>. These models should be able to perform in your work PC/laptop, and they only make use of your CPU. By default, the model that the script uses is WizardLM-7B (trained by Microsoft and Peking University), but you can change the model that you want to use by changing the variable _model_name_.
@@ -11,6 +11,8 @@ Limitations of the model _per se_ cannot be surpassed by changing some of the pa
 
 xxx
 * Chat back and forth with the AI
+
+Please bear in mind that the knowledge of the LLM is limited to the information it was trained on, meaning that it will not be aware of recent events.
 * Save the chat to continue later or to recall the messages that were exchanged
 * An audio cue is played when the AI answers to you.
 * Provide a document in either .pdf, .docx or .txt to be summarized (in bullet points form).
