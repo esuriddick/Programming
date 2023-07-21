@@ -11,6 +11,7 @@
 #!pip install -U sentence-transformers==2.2.2 (version used)
 #!pip install -U spacy==3.5.3 (version used)
 #!python -m spacy download en_core_web_md
+#!pip install auto-py-to-exe
 
 #*****************************************************************************#
 # GENERAL
@@ -36,7 +37,7 @@ temperature = 0.28                  # Randomness of the words
 top_p_value = 0.95                  # Top P sampling parameter
 top_k_value = 40                    # Top K sampling parameter
 max_tokens = 8192                   # Inference stops if it reaches n_predict tokens
-max_tokens_summary = 16384          #  Inference stops if it reaches n_predict tokens when summarizing
+max_tokens_summary = 16384          # Inference stops if it reaches n_predict tokens when summarizing
 prompt_batch_size = 9               # Number of tokens in the prompt that are fed into the model at a time
 repeat_penalty_value = 1.1          # Repeat penalty sampling parameter
 repeat_last_n_value = 64            # Last n tokens to penalize
@@ -514,7 +515,7 @@ def summary_document():
             docs_text = "".join([doc.page_content for doc in docs])
 
             #Generate summary with Spacy (5 is the average number of characters per word)
-            perc_summary = round(max(min((290 * 5) / len(docs_text), 1), 0.25), 2) #To avoid excessive context
+            perc_summary = round(min((290 * 5) / len(docs_text), 1), 2) #To avoid excessive context
             context = textSummarizer(docs_text, perc_summary)
 
             #Load modules
@@ -536,12 +537,10 @@ def summary_document():
                              ,streaming = False)
 
             #Create prompt with context
-            prompt_template =   """
-                                Write a concise summary of the following text delimited by triple backquotes.
-                                Return your response in bullet points which covers the key points of the text.
-                                ```{text}```
-                                BULLET POINT SUMMARY:
-                                """
+            prompt_template = """Write a concise summary of the following text delimited by triple backquotes.
+            Return your response in bullet points which covers the key points of the text.
+            ```{text}```
+            BULLET POINT SUMMARY:"""
             PROMPT = PromptTemplate(template = prompt_template
                                     ,input_variables = ["text"])
 
@@ -589,20 +588,24 @@ def summary_document():
             #With LangChain, the map_reduce chain breaks the document down into 1024 token chunks max.
             #Then it runs the initial prompt (map_prompt) you define on each chunk to generate a summary of that chunk.
             #In the end, all chunks are combined with the combine_prompt
-            prompt_template =   """
-                                Write a concise summary of the following text delimited by triple backquotes.
-                                Return your response in bullet points which covers the key points of the text.
-                                ```{text}```
-                                BULLET POINT SUMMARY:
-                                """
+            prompt_template = """Write a concise summary of the following text delimited by triple backquotes.
+            ```{text}```
+            SUMMARY:"""
             PROMPT = PromptTemplate(template = prompt_template
                                     ,input_variables = ["text"])
+
+            combined_prompt_template = """Write a concise summary of the following text delimited by triple backquotes.
+            Return your response in bullet points which covers the key points of the text.
+            ```{text}```
+            SUMMARY:"""
+            COMBINED_PROMPT = PromptTemplate(template = combined_prompt_template
+                                             ,input_variables = ["text"])
 
             #Generate response
             chain = load_summarize_chain(llm
                                          ,chain_type = "map_reduce"
-                                         ,map_prompt = PROMPT
-                                         ,combine_prompt = PROMPT
+                                         ,map_prompt = COMBINED_PROMPT #Final prompt
+                                         ,combine_prompt = PROMPT #Intermediate prompt
                                          ,verbose = False
                                          ,return_intermediate_steps = False
                                          )
@@ -927,10 +930,8 @@ def use_CKB():
 
             #Create prompt with context
             from langchain import PromptTemplate
-            prompt_template = """Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
-
-            {context}
-
+            prompt_template = """Use the following pieces of context delimited by triple backquotes to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
+            ```{context}```
             Question: {question}
             Answer:"""
 
