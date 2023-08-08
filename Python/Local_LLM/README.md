@@ -1,22 +1,21 @@
 # Purpose of this program
-Allow you to make use of Large Language Models (LLMs) for private and/or work related purposes. The only time this script ever requires Internet is at first launch, when it creates a folder to store all the models required to run properly. Other than the LLM itself, the other two models that it will download is a Tokenizer ("gpt2") and a sentence-transformers model ("all-MiniLM-L6-v2").
+Allow you to make use of Large Language Models (LLMs) for private and/or work related purposes. The only time this script ever requires Internet is at first launch, when it creates a folder to store all the models required to run properly. All models are downloaded from the Hugging Face website (https://huggingface.co/).
 
 # Requirements
 All of the requirements are listed at the start of the script, including the version on which the script was tested, namely:
-* pip install gpt4all==0.3.4
-* pip install langchain==0.0.205
-* pip install docx2txt==0.8
-* pip install pypdf==3.11.0
-* pip install transformers==4.30.2
-* pip install faiss-cpu==1.7.4
-* pip install -U sentence-transformers==2.2.2
-* pip install -U spacy==3.5.3
-* python -m spacy download en_core_web_md
+* #!pip3 install torch==2.0.0+cu117
+* #!pip install huggingface_hub==0.16.4
+* #!pip install transformers==4.30.2
+* #!pip install ctransformers==0.2.18
+* #!pip install langchain==0.0.205
+* #!pip install farm-haystack==1.19.0
+* #!pip install clean-text==0.6.0
+* #!pip install nltk==3.8.1
+* #!pip install docx2txt==0.8
+* #!pip install pypdf==3.11.0
 
-# Large Language Model
-The script makes use of GPT4All ecosystem, meaning that you can make use of all of the models provided in their <a href = "https://gpt4all.io/index.html">page</a>. These models should be able to perform in your work PC/laptop, and they only make use of your CPU. By default, the model that the script uses is WizardLM-7B (trained by Microsoft and Peking University), but you can change the model that you want to use by changing the variable _model_name_.
-
-Limitations of the model _per se_ cannot be surpassed by changing some of the parameters, such as _context_window_, but I have left it coded in the script in case one day it becomes useful.
+# Chat Large Language Model (LLM)
+The current model used is "TheBloke/WizardLM-Uncensored-Falcon-7B-GGML". This model should be able to perform in your work PC/laptop, and make use solely of your CPU. It is **highly recommended** that you clear the chat whenever you want to change topic of discussion to increase the speed of the model and also so it does not get confused with previous messages.
 
 # Functions
 * GUI based on Python's tkinter
@@ -25,17 +24,13 @@ Limitations of the model _per se_ cannot be surpassed by changing some of the pa
 <img src = "https://github.com/esuriddick/Programming/blob/main/Python/Local_LLM/Preview_UI_02.jpg?raw=true"></img>
 * Chat back and forth with the AI
 
-Please bear in mind that the knowledge of the LLM is limited to the information it was trained on, meaning that it will not be aware of recent events.
+Please bear in mind that the knowledge of any LLM is limited to the information it was trained on, meaning that it will not be aware of recent events.
 * Save the chat to continue later or to recall the messages that were exchanged
 * An audio cue is played when the AI answers to you.
-* Provide a document in either .pdf, .docx or .txt to be summarized (in bullet points form).
-
-I was unhappy with how slow Abstractive Text Summarization was and how sometimes the answer provided would be cut-off. Thus, by default, a summary is first created through an Extractive Text Summarization technique. Afterwards, this summary is provided to the LLM to perform Abstractive Text Summarization.
-
-If you would like to only use Abstractive Text Summarization, you just have to change the variable _extractive_text_summarization_ to 0.
+* Provide a document in either .pdf, .docx or .txt to be summarized (in bullet points form), according to each document type the source document resembles the most (i.e., news article, book or report).
 * Create and use your Custom Knowledge Base
 
-You can feed it documents in .pdf, .docx or .txt format and then use the created databases to ask questions. Every time you want to resort to your Custom Knowledge Base, you have to select the option _Use CKB_ under the tab _Tools_ and you will get a separate prompt to insert your question. This limitation is due to the fact that we cannot feed the LLM with the whole document(s) at once, so it first performs a, let's say, "Google search" across your document(s) and the 5 most relevant results are provided to the LLM. The references used by the LLM are also provided to the user once an answer is given in the chat.
+First of all, you need to create your Custom Knowledge Base through the option _Create CKB_ under the tab _Tools_. Afterwards, you select a folder with all the files that you want to be used when using your CKB, and these files must be either in PDF, DOCX or TXT format. This will create a database to search for the answer that you are looking with the option _Use CKB_ under the tab _Tools_. Once you select this option (_Use CKB_), you must select the folder with the database that you created and you will get a separate prompt to insert your question. It will then perform a "Google search" across all the documents inside your CKB and return 5 passages deemed most relevant given your query in the chat.
 
-# Note of caution
-Most LLMs as of today (05.07.2023) have a maximum limit of 2048 tokens when talking with them (i.e., considering both your messages and the ones from the model), meaning that, after a while, it will reach a point where the LLM is unable to generate a response, since it has reached its limit. Therefore, it is advised to clear the chat when changing subject. A smaller chat will also lead to faster responses by the LLM, since it has less inputs to consider when processing an answer.
+# Disclaimer
+As abovementioned, the model selected by default to chat with the user is uncensored. As mentioned in the original model's card: "An uncensored model has no guardrails. You are responsible for anything you do with the model, just as you are responsible for anything you do with any dangerous object such as a knife, gun, lighter, or car. Publishing anything this model generates is the same as publishing it yourself. You are responsible for the content you publish, and you cannot blame the model any more than you can blame the knife, gun, lighter, or car for what you do with it."
