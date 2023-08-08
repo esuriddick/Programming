@@ -34,3 +34,4 @@ First of all, you need to create your Custom Knowledge Base through the option _
 
 # Disclaimer
 As abovementioned, the model selected by default to chat with the user is uncensored. As mentioned in the original model's card: "An uncensored model has no guardrails. You are responsible for anything you do with the model, just as you are responsible for anything you do with any dangerous object such as a knife, gun, lighter, or car. Publishing anything this model generates is the same as publishing it yourself. You are responsible for the content you publish, and you cannot blame the model any more than you can blame the knife, gun, lighter, or car for what you do with it."
+Moreover, I am not responsible for any damage, loss of data or other negative events that may occur as a result of using this software. I am only providing this code as a courtesy and convenience to those who may find it useful. The use of this code is entirely at your own risk.
