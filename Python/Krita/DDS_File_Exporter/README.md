@@ -19,15 +19,15 @@ Inside the plugin folder, there is a file called **settings.ini** that contains 
 ### Installation
 There are two different ways to install Python plugins in [Krita](https://krita.org):
 #### First Method
-1. Open [Krita](https://krita.org) and go to **Tools** > **Scripts** > **Import Python Plugins...**, and select the **DDS_File_Exporter.zip** archive.
+1. Open [Krita](https://krita.org) and go to _Tools_ > _Scripts_ > _Import Python Plugins..._, and select the **DDS_File_Exporter.zip** archive.
 2. Restart [Krita](https://krita.org).
-3. Go to **Settings** > **Configure Krita...** > **Python Plugin Manager**, and click the checkbox to the left of the field that says **DDS File Exporter**.
+3. Go to _Settings_ > _Configure Krita..._ > _Python Plugin Manager_, and click the checkbox to the left of the field that says **DDS File Exporter**.
 4. Restart [Krita](https://krita.org).
 
 #### Second Method
-1. Extract the content within the folder **DDS_File_Exporter** to the folder **pykrita** (typically located here: C:\Users\<USERNAME>\AppData\Roaming\krita).
+1. Extract the content within the folder **DDS_File_Exporter** to the folder **pykrita** (typically located here: C:\Users\**USERNAME**\AppData\Roaming\krita, where **USERNAME** should be replaced with your Windows username).
 2. Restart [Krita](https://krita.org).
-3. Go to **Settings** > **Configure Krita...** > **Python Plugin Manager**, and click the checkbox to the left of the field that says **DDS File Exporter**.
+3. Go to _Settings_ > _Configure Krita..._ > _Python Plugin Manager_, and click the checkbox to the left of the field that says **DDS File Exporter**.
 4. Restart [Krita](https://krita.org).
 
 ### Execute
