@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=dds_exporter
+X-Python-2-Compatible=false
+X-Krita-Manual=Manual.html
+Name=DDS File Exporter
+Comment=A plugin that enables exporting documents to DDS format.
