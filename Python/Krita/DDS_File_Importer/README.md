@@ -12,7 +12,7 @@ When executed, this plugin will import the selected DDS file into Krita as a _PN
 
 ## Download, Install & Execute
 ### Download
-+ **[ZIP ARCHIVE - v1.0]()**
++ **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.0.zip)**
 
 ### Installation
 There are two different ways to install Python plugins in [Krita](https://krita.org):
