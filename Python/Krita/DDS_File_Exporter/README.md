@@ -11,7 +11,7 @@ Inside the plugin folder, there is a file called **settings.ini** that contains 
 
 ## Download, Install & Execute
 ### Download
-+ **[ZIP ARCHIVE - v1.0.0]()**
++ **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/d083ac9e75f5b0b0b3e736e7fe82c491f7e1f836/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.0.zip)**
 
 ### Installation
 There are two different ways to install Python plugins in [Krita](https://krita.org):
