@@ -1,7 +1,7 @@
 # DDS File Importer
 A Python plugin for use in [Krita](https://krita.org).
 
-## What is DDS File Exporter?
+## What is DDS File Importer?
 A Python plugin made specifically for [Krita](https://krita.org) that resorts to [Microsoft's texconv](https://github.com/Microsoft/DirectXTex/wiki/Texconv) to convert image files to/from DDS.
 
 ## Functionalities
