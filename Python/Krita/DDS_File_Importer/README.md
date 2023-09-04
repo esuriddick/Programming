@@ -1,4 +1,4 @@
-# DDS File Importer
+# DDS File Importer (Windows only)
 A Python plugin for use in [Krita](https://krita.org).
 
 ## What is DDS File Importer?
