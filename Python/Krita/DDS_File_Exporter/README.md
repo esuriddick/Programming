@@ -40,6 +40,6 @@ _[2023-09-04] Version 1.0_
 ## License
 As identified in this repository, all of the work shared in this repository is under the GNU General Public License v3.0. Be aware that Texconv is shared under [MIT License](https://opensource.org/license/mit/).
 
-_Summary of the license_: Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+_Summary of the GNU General Public License v3.0_: Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
 
-**_I kindly ask Krita developers to consider this plugin as an example of how to incorporate this functionality directly into Krita. I explicitly allow the use of this code in Krita without any of the conditions stated under the GNU General Public License v3.0._**
+**_I kindly ask Krita developers to consider this plugin as an example of how to incorporate this functionality directly into Krita. I explicitly allow the use of this code in Krita by Krita developers without any of the conditions stated under the GNU General Public License v3.0._**
