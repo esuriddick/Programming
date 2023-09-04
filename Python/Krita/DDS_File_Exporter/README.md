@@ -9,6 +9,9 @@ When executed, this plugin will export the current selected open document into a
 
 Inside the plugin folder, there is a file called **settings.ini** that contains the conversion settings used when the script is executed. You may use notepad to modify the file and configure the compression used or whether mip maps are generated, which should be the two most relevant settings. Nevertheless, there are also other options available such as force compatibility with DX9 or DX10.
 
+## Limitations
+- A cubemap or a texture array will not be properly exported, since a _PNG_ image file cannot encode multiple images.
+
 ## Download, Install & Execute
 ### Download
 + **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/d083ac9e75f5b0b0b3e736e7fe82c491f7e1f836/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.0.zip)**
