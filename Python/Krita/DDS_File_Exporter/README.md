@@ -39,6 +39,7 @@ I have tested version 1.0 of this plugin in version 5.1.5 of [Krita](https://kri
 ## Change log
 _[TBD] Version 1.1_
 - Cleaned up the code further (removed modules that were not in use, and leftovers in the error message boxes).
+- Added the option in _settings.ini_ to determine whether to preserve or ignore the alpha channel.
 
 _[2023-09-04] Version 1.0_
 - Initial version released.
