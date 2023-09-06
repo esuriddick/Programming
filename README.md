@@ -16,7 +16,7 @@ The following work is currently available within this repository:
    * Calculator
    * Killer ranking model (for videogame Dead by Daylight)
    * Local / Offline Large Language Model
-   * DDS File Exporter for Krita
+   * DDS File Importer / Exporter for Krita
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
