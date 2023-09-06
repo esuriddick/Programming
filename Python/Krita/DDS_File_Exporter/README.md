@@ -5,16 +5,12 @@ A Python plugin for use in [Krita](https://krita.org).
 A Python plugin made specifically for [Krita](https://krita.org) that resorts to [Microsoft's texconv](https://github.com/Microsoft/DirectXTex/wiki/Texconv) to convert image files to/from DDS.
 
 ## Functionalities
-When executed, this plugin will export the current selected open document into a _PNG_ image file in a temporary folder. Afterwards, this image file is converted to DDS and stored in the selected location. Finally, the _PNG_ image file is erased.
-
-Inside the plugin folder, there is a file called **settings.ini** that contains the conversion settings used when the script is executed. You may use notepad to modify the file and configure the compression used or whether mip maps are generated, which should be the two most relevant settings. Nevertheless, there are also other options available such as force compatibility with DX9 or DX10.
-
-## Limitations
-- A cubemap or a texture array will not be properly exported, since a _PNG_ image file cannot encode multiple images.
+When executed, this plugin will export the current selected open document into either a _TGA_, _PNG_ or _TIF_ image file in a temporary folder. Afterwards, this image file is converted to DDS and stored in the selected location. Finally, the temporary _TGA_/_PNG_/_TIF_ image file is erased.
 
 ## Download, Install & Execute
 ### Download
-+ **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/d083ac9e75f5b0b0b3e736e7fe82c491f7e1f836/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.0.zip)**
++ **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.1.zip)**
++ **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.0.zip)**
 
 ### Installation
 There are two different ways to install Python plugins in [Krita](https://krita.org):
@@ -34,12 +30,12 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 Once you have a document selected in [Krita](https://krita.org), go to the menu item _Tools_ > _Scripts_, and press the option named _Export as DDS_. A window will pop-up to ask you the name and location of where to save the file.
 
 ### Tested platforms
-I have tested version 1.0 of this plugin in version 5.1.5 of [Krita](https://krita.org).
+I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
-_[TBD] Version 1.1_
+_[2023-09-06] Version 1.1_
 - Cleaned up the code further (removed modules that were not in use, and leftovers in the error message boxes).
-- Added the option in _settings.ini_ to determine whether to preserve or ignore the alpha channel.
+- You no longer require to have or modify a _settings.ini_ file. The execution of the script will provide a window with options for: 1) intermediate file format to convert to DDS (default is TGA); 2) compression type (default is BC7 UNORM); 3) whether to generate MIP maps or not (default is to generate); and 4) whether to force DX9/DX10 headers or not (default is not to force either of these headers).
 
 _[2023-09-04] Version 1.0_
 - Initial version released.
