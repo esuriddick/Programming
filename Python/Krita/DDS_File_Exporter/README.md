@@ -35,7 +35,7 @@ I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](htt
 ## Change log
 _[2023-09-06] Version 1.1_
 - Cleaned up the code further (removed modules that were not in use, and leftovers in the error message boxes).
-- You no longer require to have or modify a _settings.ini_ file. The execution of the script will provide a window with options for: 1) intermediate file format to convert to DDS (default is TGA); 2) compression type (default is BC7 UNORM); 3) whether to generate MIP maps or not (default is to generate); and 4) whether to force DX9/DX10 headers or not (default is not to force either of these headers).
+- You no longer require to have or modify a _settings.ini_ file. The execution of the script will provide a window with options for: 1) intermediate file format to convert to DDS (default is TGA); 2) compression type (default is BC7 UNORM, also known as DXT10); 3) whether to generate MIP maps or not (default is to generate); and 4) whether to force DX9/DX10 headers or not (default is not to force either of these headers).
 
 _[2023-09-04] Version 1.0_
 - Initial version released.
