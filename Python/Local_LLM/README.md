@@ -15,7 +15,7 @@ All of the requirements are listed at the start of the script, including the ver
 * #!pip install pypdf==3.11.0
 
 # Chat Large Language Model (LLM)
-The current model used is "TheBloke/WizardLM-Uncensored-Falcon-7B-GGML" (alternatively and with better performance: TheBloke/wizardLM-7B-GGML). This model should be able to perform in your work PC/laptop, and make use solely of your CPU. It is **highly recommended** that you clear the chat whenever you want to change topic of discussion to increase the speed of the model and also so it does not get confused with previous messages.
+The current model used is "TheBloke/wizardLM-7B-GGML". This model should be able to perform in your work PC/laptop, and make use solely of your CPU. It is **highly recommended** that you clear the chat whenever you want to change topic of discussion to increase the speed of the model and also so it does not get confused with previous messages.
 
 # Functions
 * GUI based on Python's tkinter
