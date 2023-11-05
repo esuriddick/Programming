@@ -33,6 +33,9 @@ Go to the menu item _Tools_ > _Scripts_, and press the option named _Import DDS_
 I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
+_[2023-11-05] Version 1.2_
+- Changed one of the arguments in the command line from '-srgbi' to '-srgb'.
+
 _[2023-09-04] Version 1.1_
 - Added a dialog window to pop-up when executing this script to allow you to select the format to convert the DDS file into.
 
