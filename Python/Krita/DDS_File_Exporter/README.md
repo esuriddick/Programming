@@ -36,6 +36,8 @@ I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](htt
 _[2023-11-05] Version 1.2_
 - Made it clear in the dialog menu that 'BC7_UNORM' is DXT10.
 - Added an option whether to allow separate alpha channels or use a single one.
+- Corrected the export of images with a DDS format ending with "_SRGB", as previously they were exported brighter than the original file.
+- Updated the Texconv file packed with the plugin.
 
 _[2023-09-06] Version 1.1_
 - Cleaned up the code further (removed modules that were not in use, and leftovers in the error message boxes).
