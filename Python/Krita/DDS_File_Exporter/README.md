@@ -9,6 +9,7 @@ When executed, this plugin will export the current selected open document into e
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.1.zip)**
 + **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.0.zip)**
 
@@ -36,7 +37,7 @@ I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](htt
 _[2023-11-05] Version 1.2_
 - Made it clear in the dialog menu that 'BC7_UNORM' is DXT10.
 - Added an option whether to allow separate alpha channels or use a single one.
-- Corrected the export of images with a DDS format ending with "_SRGB", as previously they were exported brighter than the original file.
+- Corrected the export of images with a compression type ending with "_SRGB", as previously they were exported brighter than the original image.
 - Updated the Texconv file packed with the plugin.
 
 _[2023-09-06] Version 1.1_
