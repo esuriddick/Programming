@@ -97,7 +97,7 @@ class dds_importer(Extension):
                         ,import_format_command
                         ,"-f"
                         ,'R8G8B8A8_UNORM'
-                        ,"-srgbi"
+                        ,'-srgb'
                         ,'-m 1'
                         ,"-o"
                         ,temp_directory_location
