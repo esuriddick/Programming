@@ -9,6 +9,7 @@ When executed, this plugin will import the selected DDS file into Krita as eithe
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.1.zip)**
 + **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.0.zip)**
 
@@ -30,7 +31,7 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 Go to the menu item _Tools_ > _Scripts_, and press the option named _Import DDS_. Choose the desired format to convert the DDS file into, and then it will appear in Krita.
 
 ### Tested platforms
-I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](https://krita.org).
+I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
 _[2023-11-05] Version 1.2_
