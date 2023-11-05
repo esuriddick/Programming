@@ -33,7 +33,7 @@ Once you have a document selected in [Krita](https://krita.org), go to the menu 
 I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
-_[2023-11-00] Version 1.2_
+_[2023-11-05] Version 1.2_
 - Made it clear in the dialog menu that 'BC7_UNORM' is DXT10.
 - Added an option whether to allow separate alpha channels or use a single one.
 
