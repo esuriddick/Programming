@@ -89,15 +89,23 @@ class dds_exporter(Extension):
                                             ,'BC5_SNORM'
                                             ,'BC6H_UF16'
                                             ,'BC6H_SF16'
-                                            ,'BC7_UNORM'
+                                            ,'BC7_UNORM (DXT10)'
                                             ,'BC7_UNORM_SRGB']
                 compression_type.addItems(compression_type_options)
-                default_compression_option = 'BC7_UNORM'
+                default_compression_option = 'BC7_UNORM (DXT10)'
                 for default_compression_index in range(len(compression_type_options)):
                     if compression_type_options[default_compression_index] == default_compression_option:
                         break
                 compression_type.setCurrentIndex(default_compression_index)
                 vBox_right.addWidget(compression_type)
+                
+                ##Alpha channel(s)
+                alpha_channels_label = QLabel('Use single alpha channel?')
+                vBox_left.addWidget(alpha_channels_label)
+                alpha_channels = QCheckBox()
+                alpha_channels.setText('Yes')
+                alpha_channels.setChecked(True)
+                vBox_right.addWidget(alpha_channels)
                 
                 ##MIP maps generation
                 generate_mipmaps_label = QLabel('Generate MIP maps?')
@@ -130,12 +138,20 @@ class dds_exporter(Extension):
                 
                 ##Buttons functionality
                 def Confirm_Button_Clicked():
+                    if alpha_channels.isChecked() == True:
+                        alpha_channels_command = '-pmalpha'
+                    else:
+                        alpha_channels_command = '-alpha'
                     if generate_mipmaps.isChecked() == True:
                         generate_mipmaps_command = '-m 0'
                     else:
                         generate_mipmaps_command = '-m 1'
                     temp_file_format_command = temp_file_format.currentText()
                     compression_type_command = compression_type.currentText().split(' (')[0]
+                    if compression_type.currentText().split(' (')[0].split('_')[-1].upper() == 'SRGB':
+                        colorspace_command = '-srgb'
+                    else:
+                        colorspace_command = ''
                     if force_DX_header.currentText() == 'None':
                         force_DX_header_command = ''
                     elif force_DX_header.currentText() == 'DX9':
@@ -164,8 +180,9 @@ class dds_exporter(Extension):
                             ,"DDS"
                             ,"-f"
                             ,compression_type_command
+                            ,colorspace_command
+                            ,alpha_channels_command
                             ,generate_mipmaps_command
-                            ,'-pmalpha'
                             ,force_DX_header_command
                             ,"-o"
                             ,output_file_path
