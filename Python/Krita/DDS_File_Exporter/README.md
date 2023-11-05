@@ -31,7 +31,7 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 Once you have a document selected in [Krita](https://krita.org), go to the menu item _Tools_ > _Scripts_, and press the option named _Export as DDS_. A window will pop-up to ask you the name and location of where to save the file.
 
 ### Tested platforms
-I have tested version 1.0 and 1.1 of this plugin in version 5.1.5 of [Krita](https://krita.org).
+I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
 _[2023-11-05] Version 1.2_
