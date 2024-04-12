@@ -3,19 +3,15 @@ Allow you to make use of Large Language Models (LLMs) for private and/or work re
 
 # Requirements
 All of the requirements are listed at the start of the script, including the version on which the script was tested, namely:
-* #!pip3 install torch==2.0.0+cu117
-* #!pip install huggingface_hub==0.16.4
-* #!pip install transformers==4.30.2
-* #!pip install ctransformers==0.2.18
-* #!pip install langchain==0.0.205
-* #!pip install farm-haystack==1.19.0
+* #!pip install farm-haystack[inference,faiss,preprocessing,file-conversion,pdf]==1.24.1
+* #!pip install ctransformers==0.2.27
 * #!pip install clean-text==0.6.0
-* #!pip install nltk==3.8.1
-* #!pip install docx2txt==0.8
-* #!pip install pypdf==3.11.0
+* #!pip install langchain==0.1.8
+* #!pip install flask-sqlalchemy==3.1.1 (only required if you encounter errors associated with Flask)
+* #!pip install --force-reinstall -v "SQLAlchemy>=1.4.2,<2" (only required if you encounter errors associated with Flask)
 
 # Chat Large Language Model (LLM)
-The current model used is "TheBloke/wizardLM-7B-GGML". This model should be able to perform in your work PC/laptop, and make use solely of your CPU. It is **highly recommended** that you clear the chat whenever you want to change topic of discussion to increase the speed of the model and also so it does not get confused with previous messages.
+The current model used is "TheBloke/Mistral-7B-Instruct-v0.2-GGUF". This model should be able to perform in your work PC/laptop, and make use solely of your CPU. It is **recommended** that you clear the chat whenever you want to change topic of discussion to increase the speed of the model and also so it does not get confused with previous messages.
 
 # Functions
 * GUI based on Python's tkinter
@@ -33,5 +29,5 @@ Please bear in mind that the knowledge of any LLM is limited to the information 
 First of all, you need to create your Custom Knowledge Base through the option _Create CKB_ under the tab _Tools_. Afterwards, you select a folder with all the files that you want to be used when using your CKB, and these files must be either in PDF, DOCX or TXT format. This will create a database to search for the answer that you are looking with the option _Use CKB_ under the tab _Tools_. Once you select this option (_Use CKB_), you must select the folder with the database that you created and you will get a separate prompt to insert your question. It will then perform a "Google search" across all the documents inside your CKB and return 5 passages deemed most relevant given your query in the chat.
 
 # Disclaimer
-As abovementioned, the model selected by default to chat with the user is uncensored. As mentioned in the original model's card: "An uncensored model has no guardrails. You are responsible for anything you do with the model, just as you are responsible for anything you do with any dangerous object such as a knife, gun, lighter, or car. Publishing anything this model generates is the same as publishing it yourself. You are responsible for the content you publish, and you cannot blame the model any more than you can blame the knife, gun, lighter, or car for what you do with it."
+As abovementioned, the model selected by default to chat with the user is uncensored. An uncensored model has no guardrails. You are responsible for anything you do with the model, just as you are responsible for anything you do with any dangerous object such as a knife, gun, lighter, or car. Publishing anything this model generates is the same as publishing it yourself. You are responsible for the content you publish, and you cannot blame the model any more than you can blame the knife, gun, lighter, or car for what you do with it.
 Moreover, I am not responsible for any damage, loss of data or other negative events that may occur as a result of using this software. I am only providing this code as a courtesy and convenience to those who may find it useful. The use of this code is entirely at your own risk.
