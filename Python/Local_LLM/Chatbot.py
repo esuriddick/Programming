@@ -1,16 +1,12 @@
 #*****************************************************************************#
-# REQUIREMENTS
+# REQUIREMENTS (PYTHON 3.10.13)
 #*****************************************************************************#
-#!pip3 install torch==2.0.0+cu117
-#!pip install huggingface_hub==0.16.4
-#!pip install transformers==4.30.2
-#!pip install ctransformers==0.2.18
-#!pip install langchain==0.0.205
-#!pip install farm-haystack==1.19.0
+#!pip install farm-haystack[inference,faiss,preprocessing,file-conversion,pdf]==1.24.1
+#!pip install ctransformers==0.2.27
 #!pip install clean-text==0.6.0
-#!pip install nltk==3.8.1
-#!pip install docx2txt==0.8
-#!pip install pypdf==3.11.0
+#!pip install langchain==0.1.8
+#!pip install flask-sqlalchemy==3.1.1
+#!pip install --force-reinstall -v "SQLAlchemy>=1.4.2,<2"
 
 #*****************************************************************************#
 # MODULES
@@ -20,30 +16,22 @@
 #-----------------------------------------------------------------------------#
 import torch
 from huggingface_hub import hf_hub_download
-from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import pipeline, AutoTokenizer, AutoConfig, AutoModelForSeq2SeqLM
 from ctransformers import AutoModelForCausalLM
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.schema import messages_from_dict, messages_to_dict
 
 # Documents
 #-----------------------------------------------------------------------------#
-import re
 import nltk
 from nltk.tokenize import sent_tokenize
 from cleantext import clean
-
-# Langchain
-#-----------------------------------------------------------------------------#
-from langchain.document_loaders import PyPDFLoader, Docx2txtLoader
-from langchain.docstore.document import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-
 
 # Haystack
 #-----------------------------------------------------------------------------#
 from haystack.document_stores import FAISSDocumentStore
 from haystack import Pipeline
-from haystack.nodes import TextConverter, PreProcessor, EmbeddingRetriever
+from haystack.nodes import TextConverter, PDFToTextConverter, DocxToTextConverter, PreProcessor, EmbeddingRetriever
 
 # GUI
 #-----------------------------------------------------------------------------#
@@ -67,26 +55,25 @@ import pickle
 
 # Conversational Model
 #-----------------------------------------------------------------------------#
-max_tokens_value = 1024             # Inference stops if it reaches x tokens
-top_k_value = 40                    # Top K sampling parameter
-top_p_value = 0.95                  # Top P sampling parameter
-temperature = 0.28                  # Randomness of the words
+max_tokens_value = 2048             # Inference stops if it reaches x tokens
+temperature = 0.30                  # Randomness of the words (0.7-0.90 for creative tasks, and lower for factual)
 repeat_penalty_value = 1.1          # Repeat penalty sampling parameter
-repeat_last_n_value = 64            # Last n tokens to penalize
-prompt_batch_size = 9               # Number of tokens in the prompt that are fed into the model at a time
-max_memory = 3                      # Maximum number of interactions (pair of user and AI reactions) kept in memory
+max_memory = 5                      # Maximum number of interactions (pair of user and AI reactions) kept in memory
+chat_history = ConversationBufferWindowMemory(return_messages = True
+                                              ,k = max_memory)
 
 # GUI
 #-----------------------------------------------------------------------------#
 User_agent = "You"
 AI_agent = "AI"
 System_agent = "System"
-TextBox_Selected = 0       # Whether the user has already pressed the message box
+TextBox_Selected = 0                # Whether the user has already pressed the message box
 
 # System
 #-----------------------------------------------------------------------------#
-device = torch.device('cpu')
+device = torch.device('cpu')        # Use CPU instead of GPU
 model_chat_path = "./Models/Chat"
+model_grammar_path = "./Models/Grammar"
 model_summarization_news_path = "./Models/Summarization/News_article"
 model_summarization_news_tokenizer_path = os.path.join(model_summarization_news_path, "Tokenizer")
 model_summarization_news_model_path = os.path.join(model_summarization_news_path, "Model")
@@ -99,17 +86,12 @@ model_summarization_report_model_path = os.path.join(model_summarization_report_
 model_QA_retriever_path = "./Models/QA/Retriever"
 logs_relative_path = "./Logs"
 embeddings_relative_path = "./CKB"
-duration = 300  # Milliseconds
-freq = 500      # Frequency (in Hz)
+duration = 300                      # Milliseconds
+freq = 500                          # Frequency (in Hz)
 
 # Global variables
 #-----------------------------------------------------------------------------#
-# Messages stored from the conversation
-chat_history = ConversationBufferWindowMemory(return_messages = True
-                                              ,k = max_memory)
-
-# What is the goal of the summarization? (0 = News article / 1 = Book / 2 = Report)
-summary_goal = 0
+summary_goal = 0                    # Summarization goal
 
 #*****************************************************************************#
 # MODELS STORAGE (OFFLINE)
@@ -117,16 +99,35 @@ summary_goal = 0
 
 # Conversational Model
 #-----------------------------------------------------------------------------#
-model_chat_ckpt = "TheBloke/WizardLM-7B-uncensored-GGML"
-model_chat_file = 'WizardLM-7B-uncensored.ggmlv3.q4_1.bin'
-model_chat_type = 'llama'   #Taken from config.json of tokenizer
+model_chat_ckpt = "TheBloke/Mistral-7B-Instruct-v0.2-GGUF"
+model_chat_file = 'mistral-7b-instruct-v0.2.Q4_K_M.gguf'
+model_chat_type = 'mistral'   #Taken from config.json of model
 if os.path.exists(model_chat_path) == False:
     os.makedirs(model_chat_path)
     hf_hub_download(repo_id = model_chat_ckpt
                     ,filename = model_chat_file
                     ,local_dir = model_chat_path
                     ,local_dir_use_symlinks = False)
-    
+
+# Grammar Model
+#-----------------------------------------------------------------------------#
+model_ckpt = "grammarly/coedit-large"
+if os.path.exists(model_grammar_path) == False:
+    os.makedirs(model_grammar_path)
+    files_list = ["tokenizer_config.json"
+                  ,"spiece.model"
+                  ,"tokenizer.json"
+                  ,"special_tokens_map.json"
+                  ,"config.json"
+                  ,"pytorch_model.bin"
+                  ,"generation_config.json"]
+    for model_file in files_list:
+        hf_hub_download(repo_id = model_ckpt
+                        ,filename = model_file
+                        ,local_dir = model_grammar_path
+                        ,local_dir_use_symlinks = False)
+    del model_file, files_list
+
 # Summarization Models
 #-----------------------------------------------------------------------------#
 #Text formatter
@@ -149,7 +150,7 @@ if os.path.exists(model_summarization_news_tokenizer_path) == False:
                         ,local_dir = model_summarization_news_tokenizer_path
                         ,local_dir_use_symlinks = False)
     del model_file, files_list
-    
+
 if os.path.exists(model_summarization_news_model_path) == False:
     os.makedirs(model_summarization_news_model_path)
     files_list = ["config.json"
@@ -176,7 +177,7 @@ if os.path.exists(model_summarization_book_tokenizer_path) == False:
                         ,local_dir = model_summarization_book_tokenizer_path
                         ,local_dir_use_symlinks = False)
     del model_file, files_list
-    
+
 if os.path.exists(model_summarization_book_model_path) == False:
     os.makedirs(model_summarization_book_model_path)
     files_list = ["config.json"
@@ -189,24 +190,26 @@ if os.path.exists(model_summarization_book_model_path) == False:
     del model_file, files_list
 
 # Report
-model_ckpt = "AleBurzio/long-t5-base-govreport"
+model_ckpt = "esuriddick/led-base-16384-finetuned-govreport"
 if os.path.exists(model_summarization_report_tokenizer_path) == False:
     os.makedirs(model_summarization_report_tokenizer_path)
-    files_list = ["special_tokens_map.json"
+    files_list = ["tokenizer_config.json"
+                  ,"vocab.json"
+                  ,"merges.txt"
                   ,"tokenizer.json"
-                  ,"tokenizer_config.json"
-                  ,"spiece.model"]
+                  ,"special_tokens_map.json"]
     for model_file in files_list:
         hf_hub_download(repo_id = model_ckpt
                         ,filename = model_file
                         ,local_dir = model_summarization_report_tokenizer_path
                         ,local_dir_use_symlinks = False)
     del model_file, files_list
-    
+
 if os.path.exists(model_summarization_report_model_path) == False:
     os.makedirs(model_summarization_report_model_path)
     files_list = ["config.json"
-                  ,"pytorch_model.bin"]
+                  ,"model.safetensors"
+                  ,"generation_config.json"]
     for model_file in files_list:
         hf_hub_download(repo_id = model_ckpt
                         ,filename = model_file
@@ -231,7 +234,7 @@ if os.path.exists(model_QA_retriever_path) == False:
                         ,local_dir = model_QA_retriever_path
                         ,local_dir_use_symlinks = False)
     del model_file, files_list
-    
+
 #*****************************************************************************#
 # FUNCTIONS
 #*****************************************************************************#
@@ -296,12 +299,12 @@ def handle_summarize_news_article():
     global summary_goal
     summary_goal = 0
     Thread(target = summary_document, daemon = True).start()
-    
+
 def handle_summarize_book():
     global summary_goal
     summary_goal = 1
     Thread(target = summary_document, daemon = True).start()
-    
+
 def handle_summarize_report():
     global summary_goal
     summary_goal = 2
@@ -312,6 +315,34 @@ def handle_create_CKB():
 
 def handle_use_CKB():
     Thread(target = use_CKB, daemon = True).start()
+
+def handle_grammar_correct():
+    global TextBox_Selected
+    if TextBox_Selected == 0:
+        TextBox_Selected= 1
+        messageWindow.delete("1.0", END)
+    messageWindow.insert('1.0', "[Grammar (Correct)] ")
+
+def handle_grammar_enhance():
+    global TextBox_Selected
+    if TextBox_Selected == 0:
+        TextBox_Selected= 1
+        messageWindow.delete("1.0", END)
+    messageWindow.insert('1.0', "[Grammar (Enhance)] ")
+
+def handle_grammar_paraphrase():
+    global TextBox_Selected
+    if TextBox_Selected == 0:
+        TextBox_Selected= 1
+        messageWindow.delete("1.0", END)
+    messageWindow.insert('1.0', "[Grammar (Paraphrase)] ")
+
+def handle_grammar_simplify():
+    global TextBox_Selected
+    if TextBox_Selected == 0:
+        TextBox_Selected= 1
+        messageWindow.delete("1.0", END)
+    messageWindow.insert('1.0', "[Grammar (Simplify)] ")
 
 # File Menu
 #-----------------------------------------------------------------------------#
@@ -437,7 +468,34 @@ def send():
 
         #Submit request to AI
         chat_history.chat_memory.add_user_message(question)
-        draft_answer = AskAI(chat_history)
+        grammar_check_request = 0
+        max_len_grammar = 24
+        if '[Grammar (Correct)]' in question[:max_len_grammar] or '[Grammar (Enhance)]' in question[:max_len_grammar] or '[Grammar (Paraphrase)]' in question[:max_len_grammar] or '[Grammar (Simplify)]' in question[:max_len_grammar]:
+            grammar_check_request = 1
+        if grammar_check_request == 0:
+            draft_answer = AskAI(chat_history)
+        else:
+            if '[Grammar (Correct)]' in question[:max_len_grammar]:
+                question = question.replace('[Grammar (Correct)]', '')
+                command = "Fix the grammar: "
+            elif '[Grammar (Enhance)]' in question[:max_len_grammar]:
+                question = question.replace('[Grammar (Enhance)]', '')
+                command = "Write this more formally and coherently: "
+            elif '[Grammar (Paraphrase)]' in question[:max_len_grammar]:
+                question = question.replace('[Grammar (Paraphrase)]', '')
+                command = "Paraphrase this: "
+            elif '[Grammar (Simplify)]' in question[:max_len_grammar]:
+                question = question.replace('[Grammar (Simplify)]', '')
+                command = "Rewrite to make this easier to understand: "
+
+            question = question.strip()
+            tokenizer = AutoTokenizer.from_pretrained(model_grammar_path)
+            model = AutoModelForSeq2SeqLM.from_pretrained(model_grammar_path)
+            pipe = pipeline("text2text-generation"
+                            ,model = model
+                            ,tokenizer = tokenizer
+                            ,max_new_tokens = 1024)
+            draft_answer = pipe(command + question)[0]['generated_text']
 
         #Store AI's answer
         answer = answer_processing(draft_answer)
@@ -460,42 +518,45 @@ def send():
 
 def AskAI(history):
 
-    #Create chat history
-    messages = ""
-    for i in history.load_memory_variables({})['history']:
-        #i.type = 'human' or 'ai'
-        messages = f"{messages}{i.content}\n"
-
     #Instantiate model
     model = AutoModelForCausalLM.from_pretrained(model_path_or_repo_id = model_chat_path
                                                  ,model_type = model_chat_type
                                                  ,model_file = model_chat_file
-                                                 ,local_files_only = True)
+                                                 ,local_files_only = True
+                                                 ,context_length = 8192
+                                                 ,max_new_tokens = max_tokens_value
+                                                 )    
 
-    #Restrict the chat history
-    max_input_length = 1024
-    tokens = model.tokenize(messages)
-    if len(tokens) > max_input_length:
-        #Allow only the last max_input_length tokens to get into the prompt
-        restricted_tokens = tokens[-max_input_length:]
-        tokens_difference = len(tokens) - len(restricted_tokens)
-        messages = model.detokenize(restricted_tokens)
-        
-        #Send system message
-        chatWindow.config(state = NORMAL)
-        chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
-        chatWindow.insert(END, f"Be aware that the chat history was truncated in order for the model to properly process the user request ({tokens_difference} tokens were removed).\n\n")
-        chatWindow.config(state = DISABLED)
-
+    #Create chat history
+    max_input_length = 8192
+    system_prompt = "You are a personal assistant that provides short, concise and direct answers."
+    messages = f"<s>{system_prompt}</s> "
+    new_ai_message = ''
+    new_question = 0
+    for i in reversed(history.load_memory_variables({})['history']):
+        if i.type == 'human':
+            if new_question == 0:
+                new_user_message = f"<s>[INST]{i.content}[/INST] "
+                new_question = 1
+            else:
+                new_user_message = f"<s>{i.content} "
+            if len(new_ai_message) > 0:
+                temp_message =  messages + new_user_message + new_ai_message + new_message
+                if len(model.tokenize(temp_message)) < max_input_length:
+                    new_message = new_user_message + new_ai_message + new_message
+                else:
+                    break
+            else:
+                new_message = new_user_message
+        else:
+            new_ai_message = f"{i.content} </s>"
+    messages = messages + new_message
+    
     #Generate response
     answer = model(prompt = messages
-                   ,max_new_tokens = max_tokens_value
-                   ,top_k = top_k_value
-                   ,top_p = top_p_value
                    ,temperature = temperature
                    ,repetition_penalty = repeat_penalty_value
-                   ,last_n_tokens = repeat_last_n_value
-                   ,batch_size = prompt_batch_size)
+                   )
     return(answer)
 
 def summary_document():
@@ -510,14 +571,14 @@ def summary_document():
                  ,('Word file', '*.docx')
                  ,('Text file', '*.txt')]
 
-    selected_file = fd.askopenfilename(
-                                       title = 'Select document to summarize'
-                                        ,initialdir = './'
-                                        ,filetypes = filetypes
-                                        )
+    selected_file_path = fd.askopenfilename(
+                                           title = 'Select document to summarize'
+                                           ,initialdir = './'
+                                           ,filetypes = filetypes
+                                           )
 
     #No file selected
-    if selected_file == '':
+    if selected_file_path == '':
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
@@ -535,27 +596,47 @@ def summary_document():
 
     #Data Preparation
     try:
+        
         #Load text
-        if selected_file.endswith('.pdf'):
-            loader = PyPDFLoader(selected_file)
-            raw_text = loader.load_and_split()
+        doc = []
+        if selected_file_path.endswith('.pdf'):
+            converter = PDFToTextConverter(remove_numeric_tables = True
+                                           ,multiprocessing = False)    #Otherwise, it creates multiple windows
+            raw_doc = converter.convert(file_path = selected_file_path)[0]
+            doc.append(raw_doc)
+        elif selected_file_path.endswith('.docx'):
+            converter = DocxToTextConverter(remove_numeric_tables = False
+                                           ,multiprocessing = False) #Otherwise, it creates multiple windows
+            raw_doc = converter.convert(file_path = selected_file_path)[0]
+            doc.append(raw_doc)
+        elif selected_file_path.endswith('.txt'):
+            converter = TextConverter(remove_numeric_tables = True
+                                           ,multiprocessing = False) #Otherwise, it creates multiple windows
+            raw_doc = converter.convert(file_path = selected_file_path)[0]    
+            doc.append(raw_doc)
+        
+        #Instantiate pre-processing
+        preprocessor = PreProcessor(clean_header_footer = True
+                                    ,clean_whitespace = True
+                                    ,clean_empty_lines = True
+                                    ,split_by = "sentence" #"word", "sentence" or "passage" (i.e., paragraph)
+                                    ,split_length = 8 #Maximum lenght of the unit selected (word, sentence or passage/paragraph)
+                                    ,split_overlap = 0
+                                    ,split_respect_sentence_boundary = False #'split_respect_sentence_boundary=True' is only compatible with split_by='word'
+                                    ,add_page_number = False
+                                    )
+        
+        #Pre-process text
+        docs = preprocessor.process(doc)
 
-        elif selected_file.endswith('.docx'):
-            loader = Docx2txtLoader(selected_file)
-            raw_text = loader.load_and_split()
-
-        elif selected_file.endswith('.txt'):
-            with open(selected_file) as f:
-                raw_text = f.read()
-                
-        #Text pre-processing
-        full_text = "".join([text.page_content for text in raw_text])
+        #Combine into single text
+        full_text = "".join([text.content for text in docs])
         full_text = clean(full_text
                           ,lower = False
                           ,lang = "en") #Set to 'de' for German special handling
-
+        
         #Refresh chat history (start)
-        question = f"Please provide a summary of the document {selected_file.split('/')[-1]}."
+        question = f"Please provide a summary of the document {os.path.basename(selected_file_path)}."
         refresh_chat_history(question)
 
         #Store user's prompt
@@ -595,15 +676,18 @@ def summary_document():
             tokenizer_summarization_path = model_summarization_report_tokenizer_path
             model_summarization_path = model_summarization_report_model_path
             tokenizer = AutoTokenizer.from_pretrained(tokenizer_summarization_path)
-            model = AutoModelForSeq2SeqLM.from_pretrained(model_summarization_path).to(device)
-            model_input_max_length = 16384 / 2
-        
+            config = AutoConfig.from_pretrained(model_summarization_path
+                                                ,min_new_tokens = 5)
+            model = AutoModelForSeq2SeqLM.from_pretrained(model_summarization_path
+                                                          ,config = config).to(device)
+            model_input_max_length = 16384
+
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
         chatWindow.insert(END, f"Model for {summary_goal_descr} was selected.\n\n")
         chatWindow.config(state = DISABLED)
-    
+
     except:
         #Send system message
         chatWindow.config(state = NORMAL)
@@ -623,59 +707,25 @@ def summary_document():
                             ,tokenizer = tokenizer
                             ,device = device
                             ,framework = 'pt'
-                            ,min_length = 5
-                            ,max_length = 1024
                             ,truncation = False
                             ,clean_up_tokenization_spaces = True
                             ,num_beams = 5
-                            ,do_sample = False)
+                            ,do_sample = False
+                            ,min_new_tokens = 5
+                            ,max_new_tokens = 1024)
             summary = full_text
-            
+
         else:
             chunk_required = 1
-            pipe = pipeline(task = 'summarization'
-                            ,model = model
-                            ,tokenizer = tokenizer
-                            ,device = device
-                            ,framework = 'pt'
-                            ,min_length = 5
-                            ,max_length = 1024
-                            ,truncation = True
-                            ,clean_up_tokenization_spaces = True
-                            ,num_beams = 5
-                            ,do_sample = False)
-            
-            #Chunk text
-            optimal_chunk_size = 1000 * round(model_input_max_length / 1000)
-            splitter = RecursiveCharacterTextSplitter(chunk_size = optimal_chunk_size
-                                                      ,chunk_overlap = 0
-                                                      ,length_function = count_tokens)
-            raw_docs = splitter.split_text(full_text)
-            docs = [Document(page_content = t) for t in raw_docs]
-            
-            #Generate summaries per chunk
-            summaries = []
-            for text in docs:
-                sample_text = text.page_content
-                pipe_out = pipe(sample_text)
-                summaries.append(sent_tokenize(pipe_out[0]["summary_text"]
-                                               ,language = "english"))
-            
-            #Remove duplicates
-            summaries_clean = []
-            for item in summaries:
-                [summaries_clean.append(x.strip()) for x in item if x not in summaries_clean]
-            
-            #Merge each statement into a single summary
-            summary = "\n".join(summaries_clean)
-                
+            summary = f"The document is too lengthy for the selected model! Model's maximum tokens = {model_input_max_length} vs. Document's tokens = {count_tokens(full_text)}."
+
     except:
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
         chatWindow.insert(END, "An error occurred: it was not possible to setup the pipeline.\n\n")
         chatWindow.config(state = DISABLED)
-        
+
     #Generate summary
     try:
         if chunk_required == 0:
@@ -683,15 +733,14 @@ def summary_document():
             summary_final = "\n".join(sent_tokenize(pipe_out[0]["summary_text"]
                                                     ,language = "english"))
         else:
-            summary_final = "\n".join(sent_tokenize(summary
-                                                    ,language = "english"))
+            summary_final = summary
     except:
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
         chatWindow.insert(END, "An error occurred: it was not possible to generate a summary.\n\n")
         chatWindow.config(state = DISABLED)
-        
+
     #Store AI's answer
     chat_history.chat_memory.add_ai_message(summary_final)
 
@@ -735,94 +784,106 @@ def create_CKB():
     #Refresh message box (start)
     refresh_message_box()
 
-    #Data Preparation
+    #Data Preparation and split into chunks
     try:
-        
+
         #Load text
         files_to_index = []
+        raw_docs = []
+        date_file = str(current_time('year')) + '-' + str(current_time('month')) + '-' + str(current_time('day'))
         for selected_file in os.listdir(selected_folder):
-            selected_file_path = os.path.join(selected_folder,selected_file)
-            if selected_file.endswith('.pdf'):
-                loader = PyPDFLoader(selected_file_path)
-                raw_text = loader.load_and_split()
+            selected_file_path = os.path.join(selected_folder, selected_file)
+            if os.path.isfile(selected_file_path) == True:
+                if selected_file.endswith('.pdf'):
+                    name_file = os.path.basename(selected_file_path)
+                    files_to_index.append(str(name_file))
+                    converter = PDFToTextConverter(remove_numeric_tables = True
+                                                   ,multiprocessing = False) #Otherwise, it creates multiple windows
+                    doc = converter.convert(file_path = selected_file_path
+                                            ,meta = {'name' : name_file
+                                                     ,'date' : date_file})[0]
+                    raw_docs.append(doc)
+                elif selected_file.endswith('.docx'):
+                    name_file = os.path.basename(selected_file_path)
+                    files_to_index.append(str(name_file))
+                    converter = DocxToTextConverter(remove_numeric_tables = False
+                                                   ,multiprocessing = False) #Otherwise, it creates multiple windows
+                    doc = converter.convert(file_path = selected_file_path
+                                            ,meta = {'name' : name_file
+                                                     ,'date' : date_file})[0]
+                    raw_docs.append(doc)
 
-            elif selected_file.endswith('.docx'):
-                loader = Docx2txtLoader(selected_file_path)
-                raw_text = loader.load_and_split()
+                elif selected_file.endswith('.txt'):
+                    name_file = os.path.basename(selected_file_path)
+                    files_to_index.append(str(name_file))
+                    converter = TextConverter(remove_numeric_tables = True) #Otherwise, it creates multiple windows
+                    doc = converter.convert(file_path = selected_file_path
+                                            ,meta = {'name' : name_file
+                                                     ,'date' : date_file})[0]
+                    raw_docs.append(doc)
 
-            elif selected_file.endswith('.txt'):
-                with open(selected_file_path) as f:
-                    raw_text = f.read()
-                    
-            #Text pre-processing
-            full_text = "".join([text.page_content for text in raw_text])
-            full_text = clean(full_text
-                              ,lower = False
-                              ,lang = "en") #Set to 'de' for German special handling
-            
-            #Save text temporarily
-            name_file = selected_file.split(".")[:-1]
-            name_file = re.sub(r'[^\w_. -]', '_', "".join(name_file))
-            files_to_index.append(f"./{name_file}.txt")
-            try:
-                os.remove(f"./{name_file}.txt")
-            except:
-                pass
-            with open(f"./{name_file}.txt", 'w') as f:
-                f.write(full_text)
-
-        #Send system message
-        chatWindow.config(state = NORMAL)
-        chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
-        chatWindow.insert(END, "Document(s) was(were) successfully loaded.\n\n")
-        chatWindow.config(state = DISABLED)
-
-    except:
-        #Send system message
-        chatWindow.config(state = NORMAL)
-        chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
-        chatWindow.insert(END, "An error occurred: it was not possible to load the text from the document(s) in the selected folder.\n\n")
-        chatWindow.config(state = DISABLED)
-
-    #Process text into chunks and store
-    try:
-        indexing_pipeline = Pipeline()
-        text_converter = TextConverter()
+        #Instantiate pre-processing
         preprocessor = PreProcessor(clean_header_footer = True
                                     ,clean_whitespace = True
                                     ,clean_empty_lines = True
-                                    ,split_by = "word" #"word", "sentence" or "passage"
-                                    ,split_length = 360
-                                    ,split_overlap = 20
-                                    ,split_respect_sentence_boundary = True
+                                    ,split_by = "sentence" #"word", "sentence" or "passage" (i.e., paragraph)
+                                    ,split_length = 8 #Maximum lenght of the unit selected (word, sentence or passage/paragraph)
+                                    ,split_overlap = 0
+                                    ,split_respect_sentence_boundary = False #'split_respect_sentence_boundary=True' is only compatible with split_by='word'
+                                    ,add_page_number = True
                                     )
-        
-        document_store = FAISSDocumentStore(faiss_index_factory_str = "Flat")
-        indexing_pipeline.add_node(component = text_converter
-                                   ,name = "TextConverter"
-                                   ,inputs = ["File"])
-        indexing_pipeline.add_node(component = preprocessor
-                                   ,name = "PreProcessor"
-                                   ,inputs = ["TextConverter"])
-        indexing_pipeline.add_node(component = document_store
-                                   ,name = "DocumentStore"
-                                   ,inputs = ["PreProcessor"])
-        indexing_pipeline.run_batch(file_paths = files_to_index)
-        for selected_file in files_to_index:
-            os.remove(selected_file)
-        del selected_file
-        
+
+        #Pre-process text
+        docs = preprocessor.process(raw_docs)
+
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
-        chatWindow.insert(END, "Document was successfully processed.\n\n")
+        chatWindow.insert(END, f"Document(s) was(were) successfully loaded.\n\n")
         chatWindow.config(state = DISABLED)
 
     except:
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
-        chatWindow.insert(END, "An error occurred: it was not possible to process the text of the selected file.\n\n")
+        chatWindow.insert(END, f"An error occurred: it was not possible to load the text from the document {selected_file}.\n\n")
+        chatWindow.config(state = DISABLED)
+
+    #Store chunks
+    try:
+
+        #Instantiate document store
+        document_store = FAISSDocumentStore(faiss_index_factory_str = "Flat")
+
+        #Compile chunks into dictionary
+        dicts = []
+        for chunk in docs:
+            document_text = clean(chunk.content.strip()
+                                  ,lower = False
+                                  ,lang = "en") #Set to 'de' for German special handling
+            dicts.append({
+                          'content': document_text
+                          ,'meta': {'name': chunk.meta['name']
+                                    ,'date': chunk.meta['date']
+                                    ,'page': chunk.meta['page']
+                                    }
+                          }
+                         )
+
+        #Store data in document store
+        document_store.write_documents(dicts)
+
+        #Send system message
+        chatWindow.config(state = NORMAL)
+        chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
+        chatWindow.insert(END, "Document(s) was(were) successfully stored.\n\n")
+        chatWindow.config(state = DISABLED)
+
+    except:
+        #Send system message
+        chatWindow.config(state = NORMAL)
+        chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
+        chatWindow.insert(END, "An error occurred: it was not possible to store the document(s).\n\n")
         chatWindow.config(state = DISABLED)
 
     #Instantiate the embeddings/retriever model
@@ -832,7 +893,7 @@ def create_CKB():
                                        ,use_gpu = False
                                        ,model_format = "transformers"
                                        )
-        
+
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
@@ -853,7 +914,7 @@ def create_CKB():
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
-        chatWindow.insert(END, "Embeddings for the document(s) were sucessfully created.\n\n")
+        chatWindow.insert(END, "Embeddings for the document(s) was(were) sucessfully created.\n\n")
         chatWindow.config(state = DISABLED)
 
     except:
@@ -873,7 +934,7 @@ def create_CKB():
         document_store.save(index_path = os.path.join(embeddings_relative_path, db_name)
                             ,config_path = os.path.join(embeddings_relative_path, db_config_name))
         with open(f"{embeddings_relative_path}/{current_time('year')}{current_time('month')}{current_time('day')}_{current_time('hour')}h{current_time('minute')}.txt", 'w') as f:
-            for selected_file in os.listdir(selected_folder):
+            for selected_file in files_to_index:
                 f.write(selected_file)
                 f.write('\n')
         shutil.copyfile("./faiss_document_store.db", os.path.join(embeddings_relative_path, db_sql_name))
@@ -890,7 +951,6 @@ def create_CKB():
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
         chatWindow.insert(END, "An error occurred: it was not possible to save the Custom Knowledge Database (CKB).\n\n")
         chatWindow.config(state = DISABLED)
-
 
     #Scroll to the bottom of the chat history
     chatWindow.see(END)
@@ -942,7 +1002,7 @@ def use_CKB():
                 db_config_name = selected_file
             elif selected_file.endswith('.db'):
                 db_sql_name = selected_file
-        
+
         with open(os.path.join(selected_CBK, db_config_name), 'r') as f:
                 data = json.load(f)
                 data['sql_url'] = "sqlite:///" + os.path.join(selected_CBK, db_sql_name)
@@ -953,20 +1013,20 @@ def use_CKB():
         document_store = FAISSDocumentStore(faiss_index_path = os.path.join(selected_CBK, db_name)
                                             ,faiss_config_path = os.path.join(selected_CBK, db_config_name)
                                             )
-        
+
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
         chatWindow.insert(END, "Custom Knowledge Database (CKB) was successfully loaded.\n\n")
         chatWindow.config(state = DISABLED)
-        
+
     except:
         #Send system message
         chatWindow.config(state = NORMAL)
         chatWindow.insert(END, f"{System_agent} [{current_time('hour')}:{current_time('minute')}]: ", "system")
         chatWindow.insert(END, "An error occurred: Custom Knowledge Database (CKB) was not loaded.\n\n")
         chatWindow.config(state = DISABLED)
-    
+
     #Instantiate the retriever
     try:
         retriever = EmbeddingRetriever(document_store = document_store
@@ -1002,22 +1062,48 @@ def use_CKB():
     #Store user's prompt
     chat_history.chat_memory.add_user_message(str(query))
 
-    if query != '' and query != None:
+    if query.strip() != '' and query != None:
         try:
             #Querying pipeline
             querying_pipeline = Pipeline()
             querying_pipeline.add_node(component=retriever, name="Retriever", inputs=["Query"])
-            
+
             relevant_info = querying_pipeline.run(query = query
-                                                  ,params = {"Retriever": {"top_k": 5}}
+                                                  ,params = {"Retriever": {"top_k": 4}}
                                                   )
-            
-            #Generate answer
-            answer = ""
-            number_sentences = 1
+
+            #Define context and prompt
+            context = ""
             for document in relevant_info['documents']:
-                answer = answer + f"Passage {number_sentences}:\n{document.content}\n\n"
-                number_sentences = number_sentences + 1
+                doc_cont = document.content.replace('\n', ' ').strip()
+                context = context + f"\n{doc_cont}"
+                
+            prompt = f"""<s>Answer the question or request as truthfully as possible using the provided context. Context: {context}</s><s>[INST]{str(query)}[/INST]""".strip()
+            
+            #Instantiate model
+            model = AutoModelForCausalLM.from_pretrained(model_path_or_repo_id = model_chat_path
+                                                         ,model_type = model_chat_type
+                                                         ,model_file = model_chat_file
+                                                         ,local_files_only = True
+                                                         ,context_length = 8192)
+
+            #Restrict the prompt
+            max_input_length = 8192
+            tokens = model.tokenize(prompt)
+            if len(tokens) > max_input_length:
+                tokens_to_remove = max(len(tokens) - max_input_length, 0)
+                tokens_context = model.tokenize(context)
+                context_length = len(tokens_context)
+                restricted_context_length = context_length - tokens_to_remove
+                restricted_context_tokens = tokens_context[:restricted_context_length]
+                context = model.detokenize(restricted_context_tokens).strip()
+                prompt = f"""<s>Answer the question or request as truthfully as possible using the provided context. Context: {context}</s><s>[INST]{str(query)}[/INST]""".strip()
+
+            #Generate answer
+            answer = model(prompt = prompt
+                           ,max_new_tokens = max_tokens_value
+                           ,temperature = 0
+                           )
             answer = answer_processing(answer)
 
             #Store AI's answer
@@ -1091,7 +1177,6 @@ def refresh_chat_history(prompt, start = 1):
 
 def answer_processing(answer):
     answer = answer.strip()
-    #answer = answer.replace("```", "\n```\n")
     return(answer)
 
 def menubar_block(block = 1):
@@ -1105,6 +1190,11 @@ def menubar_block(block = 1):
         tools_menu.entryconfig('Summarize report', state = "disabled")
         tools_menu.entryconfig('Create CKB', state = "disabled")
         tools_menu.entryconfig('Use CKB', state = "disabled")
+        grammar_menu.entryconfig('Correct', state = "disabled")
+        grammar_menu.entryconfig('Enhance', state = "disabled")
+        grammar_menu.entryconfig('Paraphrase', state = "disabled")
+        grammar_menu.entryconfig('Simplify', state = "disabled")
+
     else:
         file_menu.entryconfig('Save chat', state = "normal")
         file_menu.entryconfig('Load chat', state = "normal")
@@ -1115,6 +1205,10 @@ def menubar_block(block = 1):
         tools_menu.entryconfig('Summarize report', state = "normal")
         tools_menu.entryconfig('Create CKB', state = "normal")
         tools_menu.entryconfig('Use CKB', state = "normal")
+        grammar_menu.entryconfig('Correct', state = "normal")
+        grammar_menu.entryconfig('Enhance', state = "normal")
+        grammar_menu.entryconfig('Paraphrase', state = "normal")
+        grammar_menu.entryconfig('Simplify', state = "normal")
 
 #*****************************************************************************#
 # GUI
@@ -1149,6 +1243,11 @@ tools_menu = Menu(tearoff = False)
 menubar.add_cascade(label = "Tools"
                     ,menu = tools_menu)
 
+# Grammar menu
+grammar_menu = Menu(tearoff = False)
+menubar.add_cascade(label = "Grammar"
+                    ,menu = grammar_menu)
+
 # Add File menu options
 file_menu.add_command(label = 'Save chat'
                       ,command = save_chat)
@@ -1171,6 +1270,16 @@ tools_menu.add_command(label = 'Create CKB'
                       ,command = handle_create_CKB)
 tools_menu.add_command(label = 'Use CKB'
                       ,command = handle_use_CKB)
+
+# Add Grammar menu options
+grammar_menu.add_command(label = 'Correct'
+                      ,command = handle_grammar_correct)
+grammar_menu.add_command(label = 'Enhance'
+                      ,command = handle_grammar_enhance)
+grammar_menu.add_command(label = 'Paraphrase'
+                      ,command = handle_grammar_paraphrase)
+grammar_menu.add_command(label = 'Simplify'
+                      ,command = handle_grammar_simplify)
 
 # Conversation Area
 chatWindow = Text(root
