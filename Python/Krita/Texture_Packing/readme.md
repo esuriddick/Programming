@@ -20,7 +20,7 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 4. Restart [Krita](https://krita.org).
 
 #### Second Method
-1. Extract the content within the folder **Texture_Packing** to the folder **pykrita** (typically located here: C:\Users\USERNAME\AppData\Roaming\krita, where **USERNAME** should be replaced with your Windows username).
+1. Extract the content within the **Texture_Packing.zip** archive to the folder **pykrita** (typically located here: C:\Users\USERNAME\AppData\Roaming\krita, where **USERNAME** should be replaced with your Windows username).
 2. Restart [Krita](https://krita.org).
 3. Go to _Settings_ > _Configure Krita..._ > _Python Plugin Manager_, and click the checkbox to the left of the field that says **Texture Packing**.
 4. Restart [Krita](https://krita.org).
