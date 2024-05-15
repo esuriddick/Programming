@@ -343,6 +343,23 @@ class texture_packing(Extension):
                                 colorFilter.apply(currentLayer, 0, 0, temp_doc.width(), temp_doc.height())
                                 temp_doc.refreshProjection()
                             
+                                if target_channel != 'A':
+                                    # Create fill layer for target channel
+                                    params_size = krita.Selection()  #Initial selection is empty
+                                    params_size.invert()  #Invert empty
+                                    params_color = krita.InfoObject()
+                                    params_color.setProperty('color', dict_transfer_channels_colours[target_channel])
+                                    color_fill = temp_doc.createFillLayer('Target_Channel_Fill'
+                                                                          ,'color'
+                                                                          ,params_color
+                                                                          ,params_size)
+                                    temp_root.addChildNode(color_fill, None)
+                                
+                                # Change blending mode to Binary -> AND on fill layer
+                                layerFoundByName = temp_doc.nodeByName('Target_Channel_Fill')
+                                temp_doc.setActiveNode(layerFoundByName)
+                                layerFoundByName.setBlendingMode('and')
+                            
                             # Save image to be used for the proper channel
                             temp_doc.setBatchmode(True) #No popups while saving
                             temp_file_name = 'target_channel_' + str(target_channel) + '.tga'
@@ -397,10 +414,6 @@ class texture_packing(Extension):
                             application.action('windows_previous').trigger()
                             application.action('paste_layer_from_clipboard').trigger()
                     
-                    # Hide Initial Layer
-                    layerFoundByName = currentDoc.nodeByName('Background')
-                    layerFoundByName.setVisible(False)
-                    
                     # Refresh Document
                     doc.setBatchmode(True) #No popups while saving
                     currentDoc.saveAs(os.path.join(temp_directory_location, 'temporary_project.kra'))
@@ -412,10 +425,12 @@ class texture_packing(Extension):
                     root = currentDoc.rootNode()
                     
                     # Erase Initial Layer
-                    layerFoundByName = currentDoc.nodeByName('Background')
+                    layerFoundByName = currentDoc.nodeByName('Channel_A')
                     if layerFoundByName:
-                        currentDoc.setActiveNode(layerFoundByName)
-                        application.action('remove_layer').trigger()
+                        layerFoundByName = currentDoc.nodeByName('Background')
+                        if layerFoundByName:
+                            currentDoc.setActiveNode(layerFoundByName)
+                            application.action('remove_layer').trigger()
                     
                     # Clear temporary folder
                     shutil.rmtree(temp_directory_location)
