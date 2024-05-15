@@ -1,0 +1,56 @@
+#-----------------------------------------------------------------------------#
+# MODULES
+#-----------------------------------------------------------------------------#
+
+# Krita
+#-----------------------------------------------------------------------------#
+from krita import *
+
+#-----------------------------------------------------------------------------#
+# MAIN CODE
+#-----------------------------------------------------------------------------#
+
+# Initialize Variables
+application = Krita.instance()
+currentDoc = application.activeDocument()
+root = currentDoc.rootNode()
+
+# Define Blending Mode
+for i in ['Channel_R', 'Channel_G', 'Channel_B', 'Channel_A']:
+    layerFoundByName = currentDoc.nodeByName(i)
+    if layerFoundByName:
+        if i == 'Channel_R':
+            blending_mode_name = 'copy_red'
+        elif i == 'Channel_G':
+            blending_mode_name = 'copy_green'
+        elif i == 'Channel_B':
+            blending_mode_name = 'copy_blue'
+        else:
+            blending_mode_name = 'normal'
+        layerFoundByName.setBlendingMode(blending_mode_name)
+        
+# Define Alpha Channel
+layerFoundByName = currentDoc.nodeByName('Channel_A')
+if layerFoundByName:
+    currentDoc.setActiveNode(layerFoundByName)
+    params_size = krita.Selection()  #Initial selection is empty
+    params_size.invert()  #Invert empty
+    params_color = krita.InfoObject()
+    params_color.setProperty('color', '#ffffff')
+    color_fill = currentDoc.createFillLayer('Alpha_Channel_Fill'
+                                            ,'color'
+                                            ,params_color
+                                            ,params_size)
+    root.addChildNode(color_fill, None)
+
+    for i in ['Channel_R', 'Channel_G', 'Channel_B']:
+        layerFoundByName = currentDoc.nodeByName(i)
+        if layerFoundByName:
+            currentDoc.setActiveNode(layerFoundByName)
+            application.action('move_layer_up').trigger()
+        
+    layerFoundByName = currentDoc.nodeByName('Channel_A')
+    if layerFoundByName:
+        currentDoc.setActiveNode(layerFoundByName)
+        application.action('move_layer_down').trigger()
+        application.action('convert_to_transparency_mask').trigger()

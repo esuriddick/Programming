@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=texture_packing
+X-Python-2-Compatible=false
+X-Krita-Manual=Manual.html
+Name=Texture Packing
+Comment=A plugin that enables packing several textures into different channels of the same texture.
