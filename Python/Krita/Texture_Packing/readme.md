@@ -9,7 +9,7 @@ When executed, this plugin will open a window asking what should be the size of 
 
 ## Download, Install & Execute
 ### Download
-+ **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.0.zip)**
++ **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/Texture_Packing/Downloads/Texture_Packing_v1.0.zip)**
 
 ### Installation
 There are two different ways to install Python plugins in [Krita](https://krita.org):
