@@ -5,7 +5,7 @@ A Python plugin for use in [Krita](https://krita.org).
 A Python plugin made specifically for [Krita](https://krita.org) that allows bundling specific channels of textures (Red, Green, Blue) into other channels. This is a technique commonly used in videogame development to reduce the number of textures called and, thus, improve performance.
 
 ## Functionalities
-When executed, this plugin will open a window asking what should be the size of the final texture (no scaling is done, so the input files should all be of this size), what channel from the provided texture should be used, and what texture file is to be used.
+When executed, this plugin will open a window asking what should be the size of the final texture (no scaling is done, so the input files should all be of this size), what channel from the provided texture should be used, and what input files should be used.
 
 ## Download, Install & Execute
 ### Download
