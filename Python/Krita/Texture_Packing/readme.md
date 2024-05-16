@@ -26,7 +26,7 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 4. Restart [Krita](https://krita.org).
 
 ### Execute
-Go to the menu item _Tools_ > _Scripts_, and press the option named _Texture Packing_. Unfortunately, the Python code has to be completed before some final steps are taken, otherwise Krita crashed every time I tried. Once the Python code is completed, it will let you know where is the final script located in your system for you to copy it and use inside _Tools_ > _Scripts_ > _Scripter_. This final script will make it so that each channel only has the information defined by the user, including the alpha channel.
+Go to the menu item _Tools_ > _Scripts_, and press the option named _Texture Packing_. Once the process is done, all you need to do is press the Right Mouse Button (RMB) over the layer named _Channel_A_, then you select _Convert_ > _Convert to Transparency Mask_, in order to ensure that this layer is allocated to the alpha channel of the image.
 
 ### Tested platforms
 I have tested version 1.0 of this plugin in version 5.2.2 of [Krita](https://krita.org).
