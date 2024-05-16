@@ -3,6 +3,8 @@
 #-----------------------------------------------------------------------------#
 #Krita's pre-defined actions: https://scripting.krita.org/action-dictionary
 #Krita's scripting school: https://scripting.krita.org/lessons/introduction
+#Krita's document class: https://api.kde.org/krita/html/classDocument.html
+#Krita's node class references: https://api.kde.org/krita/html/classNode.html
 #Blending mode names: https://invent.kde.org/graphics/krita/-/blob/master/libs/pigment/KoCompositeOpRegistry.h
 
 #-----------------------------------------------------------------------------#
@@ -232,37 +234,54 @@ class texture_packing(Extension):
                  # Define function to translate from origin channel to target channel
                 def ExtractOriginRGBChannelToTargetChannel(target_channel = 'R', origin_channel = 'R', file_index = 0):
                     try:
-                        if dict_origin_channels[origin_channel] not in [dict_transfer_channels[target_channel], 'Grayscale'] and target_channel != 'A':
+                    
+                        # Open Image
+                        temp_doc = application.openDocument(list_textures[file_index])
+                        application.activeWindow().addView(temp_doc)
+                        currentDoc = application.activeDocument()
+                        temp_root = currentDoc.rootNode()
+                        currentLayer = temp_doc.activeNode()
                             
-                            # Open Image
-                            temp_doc = application.openDocument(list_textures[file_index])
-                            application.activeWindow().addView(temp_doc)
-                            currentLayer = temp_doc.activeNode()
+                        # Extract information from single channel
+                        if dict_origin_channels[origin_channel] == 'Red':
+                            currentLayer.setBlendingMode('copy_red')
+                        elif dict_origin_channels[origin_channel] == 'Green':
+                            currentLayer.setBlendingMode('copy_green')
+                        elif dict_origin_channels[origin_channel] == 'Blue':
+                            currentLayer.setBlendingMode('copy_blue')
                             
-                            # Extract information from single channel
-                            if dict_origin_channels[origin_channel] == 'Red':
-                                currentLayer.setBlendingMode('copy_red')
-                            elif dict_origin_channels[origin_channel] == 'Green':
-                                currentLayer.setBlendingMode('copy_green')
-                            elif dict_origin_channels[origin_channel] == 'Blue':
-                                currentLayer.setBlendingMode('copy_blue')
+                        # Add black background
+                        params_size = krita.Selection()  #Initial selection is empty
+                        params_size.invert()  #Invert empty
+                        params_color = krita.InfoObject()
+                        params_color.setProperty('color', '#000000')
+                        color_fill = temp_doc.createFillLayer('Background_Fill'
+                                                              ,'color'
+                                                              ,params_color
+                                                              ,params_size)
+                        temp_root.addChildNode(color_fill, None)
+                        layerFoundByName = currentDoc.nodeByName('Background')
+                        if layerFoundByName:
+                            currentDoc.setActiveNode(layerFoundByName)
+                            application.action('move_layer_up').trigger()
+                            
+                        # Export Separate Channel Image
+                        temp_doc.setBatchmode(True) #No popups while saving
+                        temp_file_name = 'target_channel_' + str(target_channel) + '_separate.tga'
+                        temp_file_path = os.path.join(temp_directory_location, temp_file_name)
+                        temp_doc.saveAs(temp_file_path)
+                        
+                        # Close Image
+                        temp_doc.setModified(False)
+                        currentDoc.close()
                                 
-                            # Export Separate Channel Image
-                            temp_doc.setBatchmode(True) #No popups while saving
-                            temp_file_name = 'separate_channel.tga'
-                            temp_file_path = os.path.join(temp_directory_location, temp_file_name)
-                            temp_doc.saveAs(temp_file_path)
-                            
-                            # Close Image
-                            temp_doc.setModified(False)
-                            application.action('file_close').trigger()
-                            
+                        if dict_origin_channels[origin_channel] not in [dict_transfer_channels[target_channel], 'Grayscale']:
+                        
                             # Import Separate Channel Image
                             temp_doc = application.openDocument(temp_file_path)
-                            temp_root = temp_doc.rootNode()
                             application.activeWindow().addView(temp_doc)
+                            currentDoc = application.activeDocument()
                             currentLayer = temp_doc.activeNode()
-                            os.remove(temp_file_path)
                             
                             # Convert to grayscale
                             #print(Krita.instance().filters()) #To see available filters
@@ -273,105 +292,56 @@ class texture_packing(Extension):
                             colorFilter.apply(currentLayer, 0, 0, temp_doc.width(), temp_doc.height())
                             temp_doc.refreshProjection()
                             
-                            # Create fill layer for target channel
-                            params_size = krita.Selection()  #Initial selection is empty
-                            params_size.invert()  #Invert empty
-                            params_color = krita.InfoObject()
-                            params_color.setProperty('color', dict_transfer_channels_colours[target_channel])
-                            color_fill = temp_doc.createFillLayer('Target_Channel_Fill'
-                                                                  ,'color'
-                                                                  ,params_color
-                                                                  ,params_size)
-                            temp_root.addChildNode(color_fill, None)
-                            
-                            # Change blending mode to Binary -> AND on fill layer
-                            layerFoundByName = temp_doc.nodeByName('Target_Channel_Fill')
-                            temp_doc.setActiveNode(layerFoundByName)
-                            layerFoundByName.setBlendingMode('and')
-                            
-                            # Save image to be used for the proper channel
-                            temp_doc.setBatchmode(True) #No popups while saving
-                            temp_file_name = 'target_channel_' + str(target_channel) + '.tga'
-                            temp_file_path = os.path.join(temp_directory_location, temp_file_name)
-                            temp_doc.saveAs(temp_file_path)
-                            
-                            # Close Image
-                            temp_doc.setModified(False)
-                            application.action('file_close').trigger()
-                            
-                            # Define New Image Path
-                            list_textures[i] = temp_file_path
-                            
-                        else:
-                            # Open Image
-                            temp_doc = application.openDocument(list_textures[file_index])
-                            application.activeWindow().addView(temp_doc)
-                            currentLayer = temp_doc.activeNode()
-                            
-                            # Extract information from single channel
-                            if dict_origin_channels[origin_channel] == 'Red':
-                                currentLayer.setBlendingMode('copy_red')
-                            elif dict_origin_channels[origin_channel] == 'Green':
-                                currentLayer.setBlendingMode('copy_green')
-                            elif dict_origin_channels[origin_channel] == 'Blue':
-                                currentLayer.setBlendingMode('copy_blue')
-
-                            # Export Separate Channel Image
-                            temp_doc.setBatchmode(True) #No popups while saving
-                            temp_file_name = 'separate_channel.tga'
-                            temp_file_path = os.path.join(temp_directory_location, temp_file_name)
-                            temp_doc.saveAs(temp_file_path)
-
-                            # Close Image
-                            temp_doc.setModified(False)
-                            application.action('file_close').trigger()
-                            
-                            # Import Separate Channel Image
-                            temp_doc = application.openDocument(temp_file_path)
-                            temp_root = temp_doc.rootNode()
-                            application.activeWindow().addView(temp_doc)
-                            currentLayer = temp_doc.activeNode()
-                            os.remove(temp_file_path)
-                            
-                            # Convert to grayscale
-                            if dict_origin_channels[origin_channel] != 'Grayscale':
-                                #print(Krita.instance().filters()) #To see available filters
-                                colorFilter = application.filter('hsvadjustment')
-                                colorFilterConfig = colorFilter.configuration()
-                                #print(colorFilterConfig.properties()) #To see what properties can be setup
-                                colorFilterConfig.setProperty('s', -100)
-                                colorFilter.apply(currentLayer, 0, 0, temp_doc.width(), temp_doc.height())
+                            if target_channel != 'A':
+                                # Create fill layer for target channel + Set Blending Mode to Binary -> AND on fill layer
+                                params_size = krita.Selection()  #Initial selection is empty
+                                params_size.invert()  #Invert empty
+                                params_color = krita.InfoObject()
+                                params_color.setProperty('color', dict_transfer_channels_colours[target_channel])
+                                color_fill = temp_doc.createFillLayer('Target_Channel_Fill'
+                                                                      ,'color'
+                                                                      ,params_color
+                                                                      ,params_size)
+                                color_fill.setBlendingMode('and')
+                                temp_root = currentDoc.rootNode()
+                                temp_root.addChildNode(color_fill, currentLayer)    #Second argument indicates above which layer to insert the node (None will put at the bottom of the layers)
                                 temp_doc.refreshProjection()
                             
-                                if target_channel != 'A':
-                                    # Create fill layer for target channel
-                                    params_size = krita.Selection()  #Initial selection is empty
-                                    params_size.invert()  #Invert empty
-                                    params_color = krita.InfoObject()
-                                    params_color.setProperty('color', dict_transfer_channels_colours[target_channel])
-                                    color_fill = temp_doc.createFillLayer('Target_Channel_Fill'
-                                                                          ,'color'
-                                                                          ,params_color
-                                                                          ,params_size)
-                                    temp_root.addChildNode(color_fill, None)
-                                
-                                # Change blending mode to Binary -> AND on fill layer
-                                layerFoundByName = temp_doc.nodeByName('Target_Channel_Fill')
-                                temp_doc.setActiveNode(layerFoundByName)
-                                layerFoundByName.setBlendingMode('and')
-                            
-                            # Save image to be used for the proper channel
+                            # Merge layers
                             temp_doc.setBatchmode(True) #No popups while saving
                             temp_file_name = 'target_channel_' + str(target_channel) + '.tga'
                             temp_file_path = os.path.join(temp_directory_location, temp_file_name)
                             temp_doc.saveAs(temp_file_path)
-                            
-                            # Close Image
                             temp_doc.setModified(False)
-                            application.action('file_close').trigger()
+                            currentDoc.close()
                             
-                            # Define New Image Path
-                            list_textures[i] = temp_file_path
+                            if target_channel != 'A':
+                                # Duplicate layer + Set Addition Blending Mode
+                                temp_doc = application.openDocument(temp_file_path)
+                                application.activeWindow().addView(temp_doc)
+                                currentDoc = application.activeDocument()
+                                node = currentDoc.nodeByName('Background')
+                                DuplicatedLayer = node.duplicate()
+                                DuplicatedLayer.setName('Duplicated Layer')
+                                DuplicatedLayer.setBlendingMode('add')
+                                temp_root = currentDoc.rootNode()
+                                temp_root.addChildNode(DuplicatedLayer, node)
+                            
+                                # Merge Layer
+                                DuplicatedLayer.mergeDown()
+                            
+                                # Save image to be used for the proper channel
+                                temp_doc.setBatchmode(True) #No popups while saving
+                                temp_file_name = 'target_channel_' + str(target_channel) + '_final.tga'
+                                temp_file_path = os.path.join(temp_directory_location, temp_file_name)
+                                temp_doc.saveAs(temp_file_path)
+                            
+                                # Close Image
+                                temp_doc.setModified(False)
+                                currentDoc.close()
+
+                        # Define New Image Path
+                        list_textures[i] = temp_file_path
                             
                     except subprocess.CalledProcessError as e:
                         shutil.rmtree(temp_directory_location)
@@ -399,48 +369,68 @@ class texture_packing(Extension):
                     doc_size = header_04_label.currentText().split('x')[0]
                     #createDocument(width, height, name, colorSpace, bitDepth, colorProfile, DPI)
                     doc = application.createDocument(int(doc_size), int(doc_size), 'New Document', 'RGBA', 'U8', '', 72.0)
-                    root = doc.rootNode()
                     application.activeWindow().addView(doc)
                     currentDoc = application.activeDocument()
                     
                     # Copy the images to the new document (i = 0 -> R / i = 1 -> G / i = 2 -> B / i = 3 -> A)
+                    currentDoc.waitForDone()
+                    node = currentDoc.nodeByName('Background')
                     for i in range(len(list_textures)):
                         if list_textures[i] not in ['', 'No file selected.']:
-                            temp_doc = application.openDocument(list_textures[i])
-                            application.activeWindow().addView(temp_doc)
-                            currentLayer = temp_doc.activeNode()
-                            currentLayer.setName(list_textures_names[i])
-                            application.action('copy_layer_clipboard').trigger()
-                            application.action('windows_previous').trigger()
-                            application.action('paste_layer_from_clipboard').trigger()
+                            if i == 0:
+                                FileLayer_R = currentDoc.createFileLayer('Channel_R' #Layer Name
+                                                                         ,list_textures[i] #File path
+                                                                         ,'None') #Scaling Method
+                                FileLayer_R.setBlendingMode('copy_red')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_R, node)
+                            elif i == 1:
+                                FileLayer_G = currentDoc.createFileLayer('Channel_G'
+                                                                         ,list_textures[i]
+                                                                         ,'None')
+                                FileLayer_G.setBlendingMode('copy_green')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_G, node)
+                            elif i == 2:
+                                FileLayer_B = currentDoc.createFileLayer('Channel_B'
+                                                                         ,list_textures[i]
+                                                                         ,'None')
+                                FileLayer_B.setBlendingMode('copy_blue')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_B, node)
+                            elif i == 3:
+                                FileLayer_A = currentDoc.createFileLayer('Channel_A'
+                                                                         ,list_textures[i]
+                                                                         ,'None')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_A, node)
+                    
+                                # Remove Initial Layer
+                                node.remove()
+                                
+                                # Add Background Layer for Transparency Mask
+                                params_size = krita.Selection()  #Initial selection is empty
+                                params_size.invert()  #Invert empty
+                                params_color = krita.InfoObject()
+                                params_color.setProperty('color', '#ffffff')
+                                color_fill = currentDoc.createFillLayer('Alpha_Channel_Fill'
+                                                                        ,'color'
+                                                                        ,params_color
+                                                                        ,params_size)
+                                root = currentDoc.rootNode()
+                                root.addChildNode(color_fill, FileLayer_A)
                     
                     # Refresh Document
                     doc.setBatchmode(True) #No popups while saving
-                    currentDoc.saveAs(os.path.join(temp_directory_location, 'temporary_project.kra'))
+                    currentDoc.saveAs(os.path.join(temp_directory_location, 'Packed_Texture.kra'))
                     currentDoc.setModified(False)
                     application.action('file_close_all').trigger()
-                    doc = application.openDocument(os.path.join(temp_directory_location, 'temporary_project.kra'))
+                    doc = application.openDocument(os.path.join(temp_directory_location, 'Packed_Texture.kra'))
                     application.activeWindow().addView(doc)
                     currentDoc = application.activeDocument()
-                    root = currentDoc.rootNode()
-                    
-                    # Erase Initial Layer
-                    layerFoundByName = currentDoc.nodeByName('Channel_A')
-                    if layerFoundByName:
-                        layerFoundByName = currentDoc.nodeByName('Background')
-                        if layerFoundByName:
-                            currentDoc.setActiveNode(layerFoundByName)
-                            application.action('remove_layer').trigger()
                     
                     # Clear temporary folder
                     shutil.rmtree(temp_directory_location)
-                    
-                    # Finishing code
-                    messageBox = QMessageBox()
-                    messageBox.setWindowTitle("Finish the process throug the Scripter")
-                    messageBox.setText(f"You may find the script to use here: {os.path.join(os.path.dirname(__file__), 'resources')}")
-                    messageBox.setStandardButtons(QMessageBox.Close)
-                    messageBox.exec()
 
                 except subprocess.CalledProcessError as e:
                     shutil.rmtree(temp_directory_location)
