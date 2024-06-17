@@ -25,6 +25,9 @@ from PyQt5.QtWidgets import (QMessageBox
                              ,QCheckBox
                              ,QPushButton)
 
+#Linux
+from sys import platform
+
 #*****************************************************************************#
 # MAIN CODE
 #*****************************************************************************#
@@ -104,9 +107,12 @@ class dds_importer(Extension):
                         ,input_file]
                 while '' in args:
                     args.remove('')
-                argline = " ".join(args)
+                argline = ("wine " if platform != "win32" else '') + " ".join(args)
                 for i in [converter_path, temp_directory_location, input_file]:
-                    argline = argline.replace(i, '"' + i + '"')
+                    if platform != "win32":
+                        argline = argline.replace(i, '"$(winepath -w \'' + i + '\')"')
+                    else:
+                        argline = argline.replace(i, '"' + i + '"')
                     
                 #Create document from DDS
                 try:
