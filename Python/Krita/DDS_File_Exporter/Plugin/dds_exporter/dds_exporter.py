@@ -25,6 +25,9 @@ from PyQt5.QtWidgets import (QMessageBox
                              ,QCheckBox
                              ,QPushButton)
 
+#Linux
+from sys import platform
+
 #*****************************************************************************#
 # MAIN CODE
 #*****************************************************************************#
@@ -189,9 +192,13 @@ class dds_exporter(Extension):
                             ,temp_file_path]
                     while '' in args:
                         args.remove('')
-                    argline = " ".join(args)
+                    argline = ("wine " if platform != "win32" else '') + " ".join(args)
                     for i in [converter_path, output_file_path, temp_file_path]:
-                        argline = argline.replace(i, '"' + i + '"')
+                        if platform != "win32":
+                            argline = argline.replace(i, '"$(winepath -w \'' + i + '\')"')
+                        else:
+                            argline = argline.replace(i, '"' + i + '"')
+
                     
                     #Convert document
                     try:
