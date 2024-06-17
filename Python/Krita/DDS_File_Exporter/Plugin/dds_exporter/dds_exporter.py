@@ -199,7 +199,6 @@ class dds_exporter(Extension):
                         else:
                             argline = argline.replace(i, '"' + i + '"')
 
-                    
                     #Convert document
                     try:
                         subprocess.run(argline
