@@ -1,4 +1,4 @@
-# DDS File Exporter (Windows only)
+# DDS File Exporter
 A Python plugin for use in [Krita](https://krita.org).
 
 ## What is DDS File Exporter?
