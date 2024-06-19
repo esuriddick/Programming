@@ -1,4 +1,4 @@
-# DDS File Importer (Windows only)
+# DDS File Importer
 A Python plugin for use in [Krita](https://krita.org).
 
 ## What is DDS File Importer?
@@ -9,6 +9,7 @@ When executed, this plugin will import the selected DDS file into Krita as eithe
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.3](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.3.zip)**
 + **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.1.zip)**
 + **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.0.zip)**
@@ -34,6 +35,9 @@ Go to the menu item _Tools_ > _Scripts_, and press the option named _Import DDS_
 I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
+_[2024-06-19] Version 1.3_
+- Compatibility with Linux is implemented - Thanks to Liniya.
+
 _[2023-11-05] Version 1.2_
 - Changed one of the arguments in the command line from '-srgbi' to '-srgb' to avoid darkening when importing specific formats of DDS (namely the ones ending with "_SRGB").
 - Updated the Texconv file packed with the plugin.
