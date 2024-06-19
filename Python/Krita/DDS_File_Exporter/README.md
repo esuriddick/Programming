@@ -9,6 +9,7 @@ When executed, this plugin will export the current selected open document into e
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.3](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.3.zip)**
 + **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.1.zip)**
 + **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.0.zip)**
@@ -34,6 +35,9 @@ Once you have a document selected in [Krita](https://krita.org), go to the menu 
 I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org).
 
 ## Change log
+_[2024-06-19] Version 1.3_
+- Compatibility with Linux is implemented - Thanks to Liniya.
+
 _[2023-11-05] Version 1.2_
 - Made it clear in the dialog menu that 'BC7_UNORM' is DXT10.
 - Added an option whether to allow separate alpha channels or use a single one.
