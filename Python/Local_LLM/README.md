@@ -8,7 +8,7 @@ All of the requirements are listed at the start of the script, including the ver
 * #!pip install clean-text==0.6.0
 * #!pip install langchain==0.1.8
 * #!pip install flask-sqlalchemy==3.1.1 (only required if you encounter errors associated with Flask)
-* #!pip install --force-reinstall -v "SQLAlchemy>=1.4.2,<2" (only required if you encounter errors associated with Flask)
+* #!pip install --force-reinstall -v "SQLAlchemy>=1.4.2,<2" (only required if you encounter errors associated with Flask / creating a CKB)
 
 # Chat Large Language Model (LLM)
 The current model used is "TheBloke/Mistral-7B-Instruct-v0.2-GGUF". This model should be able to perform in your work PC/laptop, and make use solely of your CPU. It is **recommended** that you clear the chat whenever you want to change topic of discussion to increase the speed of the model and also so it does not get confused with previous messages.
