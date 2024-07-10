@@ -17,6 +17,7 @@ The following work is currently available within this repository:
    * Killer ranking model (for videogame Dead by Daylight)
    * Local / Offline Large Language Model
    * DDS File Importer / Exporter for Krita
+   * (Bi-directional) Stepwise Regression
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
