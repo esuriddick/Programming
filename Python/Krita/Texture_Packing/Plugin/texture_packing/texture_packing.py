@@ -419,6 +419,47 @@ class texture_packing(Extension):
                                                                         ,params_size)
                                 root = currentDoc.rootNode()
                                 root.addChildNode(color_fill, FileLayer_A)
+                                
+                        else:
+                            if i == 0:
+                                # Add Black layer
+                                params_size = krita.Selection()  #Initial selection is empty
+                                params_size.invert()  #Invert empty
+                                params_color = krita.InfoObject()
+                                params_color.setProperty('color', '#000000')
+                                FileLayer_R = currentDoc.createFillLayer('Channel_R'
+                                                                         ,'color'
+                                                                         ,params_color
+                                                                         ,params_size)
+                                FileLayer_R.setBlendingMode('copy_red')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_R, node)
+                            elif i == 1:
+                                # Add Black layer
+                                params_size = krita.Selection()  #Initial selection is empty
+                                params_size.invert()  #Invert empty
+                                params_color = krita.InfoObject()
+                                params_color.setProperty('color', '#000000')
+                                FileLayer_G = currentDoc.createFillLayer('Channel_G'
+                                                                         ,'color'
+                                                                         ,params_color
+                                                                         ,params_size)
+                                FileLayer_G.setBlendingMode('copy_green')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_G, node)
+                            elif i == 2:
+                                # Add Black layer
+                                params_size = krita.Selection()  #Initial selection is empty
+                                params_size.invert()  #Invert empty
+                                params_color = krita.InfoObject()
+                                params_color.setProperty('color', '#000000')
+                                FileLayer_B = currentDoc.createFillLayer('Channel_B'
+                                                                         ,'color'
+                                                                         ,params_color
+                                                                         ,params_size)
+                                FileLayer_B.setBlendingMode('copy_blue')
+                                root = currentDoc.rootNode()
+                                root.addChildNode(FileLayer_B, node)
                     
                     # Refresh Document
                     doc.setBatchmode(True) #No popups while saving
