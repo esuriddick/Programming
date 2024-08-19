@@ -32,6 +32,9 @@ Go to the menu item _Tools_ > _Scripts_, and press the option named _Texture Pac
 I have tested version 1.0 of this plugin in version 5.2.2 of [Krita](https://krita.org).
 
 ## Change log
+_[2024-08-19] Version 1.1_
+- If you don't select a texture for the red, blue and/or green channel(s), a black one will be created to avoid improper filling of the channel by a fully white layer.
+
 _[2023-09-04] Version 1.0_
 - Initial version released.
 
