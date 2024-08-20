@@ -9,6 +9,7 @@ When executed, this plugin will open a window asking what should be the size of 
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/Texture_Packing/Downloads/Texture_Packing_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/Texture_Packing/Downloads/Texture_Packing_v1.1.zip)**
 + **[ZIP ARCHIVE - v1.0](https://github.com/esuriddick/Programming/raw/main/Python/Krita/Texture_Packing/Downloads/Texture_Packing_v1.0.zip)**
 
@@ -33,6 +34,9 @@ Go to the menu item _Tools_ > _Scripts_, and press the option named _Texture Pac
 I have tested version 1.0 of this plugin in version 5.2.2 of [Krita](https://krita.org).
 
 ## Change log
+_[2024-08-20] Version 1.2_
+- Unecessarily, when the channel selected to be used was 'Grayscale', the plugin was converting the grayscale to the selected channel. However, grayscale textures can be easily converted to the specified channel simply by applying the required mode. Now, it will use the original texture map and apply the specified channel's mode in the output image.
+
 _[2024-08-19] Version 1.1_
 - If you don't select a texture for the red, blue and/or green channel(s), a black one will be created to avoid improper filling of the channel by a fully white layer.
 
