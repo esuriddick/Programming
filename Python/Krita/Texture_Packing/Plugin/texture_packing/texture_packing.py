@@ -231,7 +231,7 @@ class texture_packing(Extension):
                                         ,'A' : origin_channel_combo_A.currentText()}
                                         
                 # Functions
-                 # Define function to translate from origin channel to target channel
+                # Define function to translate from origin channel to target channel
                 def ExtractOriginRGBChannelToTargetChannel(target_channel = 'R', origin_channel = 'R', file_index = 0):
                     try:
                     
@@ -361,9 +361,10 @@ class texture_packing(Extension):
                     # Generate textures for different target and origin channels (i = 0 -> R / i = 1 -> G / i = 2 -> B / i = 3 -> A)
                     for i in range(len(list_textures)):
                         if list_textures[i] not in ['', 'No file selected.']:
-                            ExtractOriginRGBChannelToTargetChannel(target_channel = list(dict_transfer_channels.keys())[i]
-                                                                   ,origin_channel = list(dict_origin_channels.keys())[i]
-                                                                   ,file_index = i)
+                            if dict_origin_channels[list(dict_origin_channels.keys())[i]] not in ['Grayscale']:
+                                ExtractOriginRGBChannelToTargetChannel(target_channel = list(dict_transfer_channels.keys())[i]
+                                                                       ,origin_channel = list(dict_origin_channels.keys())[i]
+                                                                       ,file_index = i)
                     
                     # Create new document
                     doc_size = header_04_label.currentText().split('x')[0]
