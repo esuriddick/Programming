@@ -18,6 +18,7 @@ The following work is currently available within this repository:
    * Local / Offline Large Language Model
    * DDS File Importer / Exporter for Krita
    * (Bi-directional) Stepwise Regression
+   * Texture Packing Tool
 
 3. <b>SAS</b>
    * SAS Base Cheat Sheet
