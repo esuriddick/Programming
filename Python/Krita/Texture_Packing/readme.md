@@ -1,5 +1,5 @@
 # DEPRECATED
-This plugin will no longer be updated, since I have developed another [Python-based application](https://github.com/esuriddick/Programming/tree/83786b57af18b05ba9324aa5abfc625ff3fa0462/Python/Texture_Packing) that is:
+This plugin will no longer be updated, since I have developed another [Python-based application](https://github.com/esuriddick/Programming/tree/main/Python/Texture_Packing) that is:
 - Software independent - it works without the need of any specific software or version of it.
 - Easier to maintain - it requires far fewer line of codes and it does not require the use of any Krita specific programming.
 - More reliable - Krita would randomly/inconsistently crash when running the script.
