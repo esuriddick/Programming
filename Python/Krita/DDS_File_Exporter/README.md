@@ -9,6 +9,7 @@ When executed, this plugin will export the current selected open document into e
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.4](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.4.zip)**
 + **[ZIP ARCHIVE - v1.3](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.3.zip)**
 + **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.1.zip)**
@@ -32,9 +33,12 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 Once you have a document selected in [Krita](https://krita.org), go to the menu item _Tools_ > _Scripts_, and press the option named _Export as DDS_. A window will pop-up to ask you the name and location of where to save the file.
 
 ### Tested platforms
-I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org).
+I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org). Versions 1.3 and 1.4 of this plugin have been tested in version 5.2.2 of [Krita](https://krita.org).
 
 ## Change log
+_[2024-11-29] Version 1.4_
+- Added the option to export DDS without compression.
+
 _[2024-06-19] Version 1.3_
 - Compatibility with Linux is implemented - Thanks to Liniya.
 
