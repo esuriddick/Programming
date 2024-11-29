@@ -80,7 +80,8 @@ class dds_exporter(Extension):
                 compression_type_label = QLabel('Compression type:')
                 vBox_left.addWidget(compression_type_label)
                 compression_type = QComboBox()
-                compression_type_options = ['BC1_UNORM (DXT1)'
+                compression_type_options = ['Uncompressed'
+                                            ,'BC1_UNORM (DXT1)'
                                             ,'BC1_UNORM_SRGB'
                                             ,'BC2_UNORM (DXT3)'
                                             ,'BC2_UNORM_SRGB'
@@ -150,7 +151,10 @@ class dds_exporter(Extension):
                     else:
                         generate_mipmaps_command = '-m 1'
                     temp_file_format_command = temp_file_format.currentText()
-                    compression_type_command = compression_type.currentText().split(' (')[0]
+                    if compression_type.currentText() == 'Uncompressed':
+                        compression_type_command = 'R8G8B8A8_UNORM'
+                    else:
+                        compression_type_command = compression_type.currentText().split(' (')[0]
                     if compression_type.currentText().split(' (')[0].split('_')[-1].upper() == 'SRGB':
                         colorspace_command = '-srgb'
                     else:
