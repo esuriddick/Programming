@@ -10,7 +10,8 @@ When executed, a window will pop up with the following options:
     - Nearest: uses the nearest pixel's value. While it's the fastest of the four available resampling methods, it might not always offer the best visual output.
     - Bicubic: employs bicubic interpolation over a 4x4 pixel grid. While it is slower than 'Bilinear', it's favored for its smoother enlargements.
     - Lanczo: leverages Lanczos interpolation across an 8x8 pixel neighborhood.
-    Overall, Lanczos and Bicubic are often considered the best quality options, with Lanczos slightly edging out Bicubic in terms of sharpness and detail preservation
+
+Overall, Lanczos and Bicubic are often considered the best quality options, with Lanczos slightly edging out Bicubic in terms of sharpness and detail preservation
 
 Once you are ready, you may press the "Submit" button.
 
