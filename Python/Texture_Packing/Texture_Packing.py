@@ -424,7 +424,6 @@ if process_canceled == 0:
     def save_image():
         filetypes = [('TGA files', '*.tga')
                      ,('PNG files', '*.png')
-                     ,('JPG files', '*.jpg')
                      ,('All files', '*.*')]
         file_path = fd.asksaveasfilename(defaultextension = '.tga'
                                          ,filetypes = filetypes)
