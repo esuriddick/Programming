@@ -7,7 +7,6 @@
 # MODULES
 #-----------------------------------------------------------------------------#
 from PIL import Image
-import os
 import tkinter as tk                       #Basic UI
 from tkinter import ttk                    #Improved UI elements
 from tkinter import filedialog as fd       #File dialog window
@@ -182,7 +181,6 @@ if process_canceled == 0:
     # VARIABLES
     #-------------------------------------------------------------------------#
     input_filepath = fp_input_string.get()
-    _, input_fileextension = os.path.splitext(input_filepath)
     image_resize_size = int(resize_value.get())
     for i in options_02:
         if i == reasample_value.get():
