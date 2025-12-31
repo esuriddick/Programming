@@ -33,7 +33,10 @@ There are two different ways to install Python plugins in [Krita](https://krita.
 Once you have a document selected in [Krita](https://krita.org), go to the menu item _Tools_ > _Scripts_, and press the option named _Export as DDS_. A window will pop-up to ask you the name and location of where to save the file.
 
 ### Tested platforms
-I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org). Versions 1.3 and 1.4 of this plugin have been tested in version 5.2.2 of [Krita](https://krita.org).
+I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita](https://krita.org) in Windows. Version 1.3 was tested in version 5.2.2 of [Krita](https://krita.org) in Windows, while version 1.4 was tested in version 5.2.2 of [Krita](https://krita.org) in both Windows and Linux Mint.
+
+### Linux
+In order for the script to run properly, you need to have [WINE](https://www.winehq.org/) installed in your system, and Krita cannot be installed as a [Flatpak](https://docs.flatpak.org/en/latest/introduction.html). Otherwise, the executable shared under the resources folder cannot be used.
 
 ## Change log
 _[2024-11-29] Version 1.4_
