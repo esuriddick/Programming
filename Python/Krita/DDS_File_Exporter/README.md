@@ -9,6 +9,7 @@ When executed, this plugin will export the current selected open document into e
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.5](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.5.zip)**
 + **[ZIP ARCHIVE - v1.4](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.4.zip)**
 + **[ZIP ARCHIVE - v1.3](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.3.zip)**
 + **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Exporter/Downloads/DDS_File_Exporter_v1.2.zip)**
