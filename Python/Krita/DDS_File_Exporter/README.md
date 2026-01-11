@@ -39,6 +39,9 @@ I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita
 In order for the script to run properly, you need to have [WINE](https://www.winehq.org/) installed in your system, and Krita cannot be installed as a [Flatpak](https://docs.flatpak.org/en/latest/introduction.html). Otherwise, the executable shared under the resources folder cannot be used.
 
 ## Change log
+_[2026-01-11] Version 1.5_
+- texconv.exe was updated to the latest version currently available (October 2025).
+
 _[2024-11-29] Version 1.4_
 - Added the option to export DDS without compression.
 
