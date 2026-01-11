@@ -1,0 +1,28 @@
+title: quarto-cheatsheet
+author: Joe Slam
+version: 1.0.0
+quarto-required: ">=1.3.0"
+contributes:
+  formats:
+    pdf:
+      documentclass: article
+      geometry: 
+        - a4paper
+        - landscape
+        - bottom=78mm
+      df-print: kable
+      code-line-numbers: false # false
+      keep-tex: false # true # false
+      lang: en
+      date-format: "DD.MM.YYYY"
+      linkcolor: black
+      nodecolor: "185191"  # HTML color only
+      linecolor: "185191"  # HTML color only
+      headcolor: "FFFFFF"  # HTML color only
+      textcolor: "000000"  # HTML color only
+      include-in-header: in-header.tex   # header
+      template-partials: 
+        - before-body.tex
+        - after-body.tex
+      filters: 
+        - cheatsheet.lua
