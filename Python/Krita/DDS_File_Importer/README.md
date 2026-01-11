@@ -9,6 +9,7 @@ When executed, this plugin will import the selected DDS file into Krita as eithe
 
 ## Download, Install & Execute
 ### Download
++ **[ZIP ARCHIVE - v1.4](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.4.zip)**
 + **[ZIP ARCHIVE - v1.3](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.3.zip)**
 + **[ZIP ARCHIVE - v1.2](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.2.zip)**
 + **[ZIP ARCHIVE - v1.1](https://github.com/esuriddick/Programming/raw/main/Python/Krita/DDS_File_Importer/Downloads/DDS_File_Importer_v1.1.zip)**
@@ -38,6 +39,9 @@ I have tested version 1.0, 1.1 and 1.2 of this plugin in version 5.1.5 of [Krita
 In order for the script to run properly, you need to have [WINE](https://www.winehq.org/) installed in your system, and Krita cannot be installed as a [Flatpak](https://docs.flatpak.org/en/latest/introduction.html). Otherwise, the executable shared under the resources folder cannot be used.
 
 ## Change log
+_[2026-01-11] Version 1.4_
+- texconv.exe was updated to the latest version currently available (October 2025).
+
 _[2024-06-19] Version 1.3_
 - Compatibility with Linux is implemented - Thanks to Liniya.
 
