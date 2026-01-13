@@ -4,7 +4,8 @@ format:
    quarto-cheatsheet-pdf
 ---
 
-# Introduction
+\titletext{Introduction}
+
 :::{.cheat title="Library"}
 `import polars as pl`
 :::
@@ -31,7 +32,27 @@ lf = pl.LazyFrame({
 ```
 :::
 
-# Input/Output
+:::{.cheat title="Conversion to DataFrame"}
+```
+df = lf.collect(engine = EngineType)
+
+pl.Config.set_engine_affinity(EngineType)  
+```
+The values allowed for EngineType are 'in-memory' (default), 'streaming' and 'gpu'.
+:::
+
+:::{.cheat title="LazyFrame Schema"}
+```
+schema = lf.collect_schema()
+names = schema.names()
+data_types = schema.dtypes()
+n_vars = schema.len()
+```
+:::
+
+\columnbreak
+
+\titletext{Input/Output}
 :::{.cheat title="Parquet"}
 ```
 lf = pl.scan_parquet(
@@ -73,7 +94,9 @@ lf.sink_csv(
 ```
 :::
 
-# Selection
+\columnbreak
+
+\titletext{Selection}
 :::{.cheat title="Rows"}
 ```
 lf.filter(
@@ -101,7 +124,49 @@ Special expressions: pl.all(), pl.exclude('column-name-01', ..., 'column-name-n'
 ```
 :::
 
-# Generation
+\titletext{Manipulation}
+:::{.cheat title="Rename Column(s)"}
+```
+lf.rename(
+    {'age': 'Age'}
+)
+```
+:::
+
+:::{.cheat title="Drop Column(s)"}
+```
+lf.drop(
+    ['age', 'score']
+)
+```
+:::
+
+:::{.cheat title="Change Data Type"}
+```
+lf.cast(
+    {'age': pl.Int8}
+)
+```
+:::
+
+:::{.cheat title="Sorting"}
+```
+lf.sort(
+    ['score', 'age']
+    ,descending = bool (default: False)
+    ,nulls_last = bool (default: False)
+)
+
+lf.select(
+    pl.all().sort_by(['score', 'age'])
+)
+
+lf.select(
+    pl.col(['score', 'age']).set_sorted()
+)
+```
+:::
+
 :::{.cheat title="Index Column"}
 ```
 lf = lf.with_row_index(name = 'index')
@@ -111,15 +176,15 @@ lf = lf.with_row_index(name = 'index')
 :::{.cheat title="Custom Column(s)"}
 ```
 lf.with_columns(
-    age_round_01 = pl.col('age').round(0)
-    ,pl.col('age').round(0).alias('age_round_02')
-    ,pl.col('age').round(0).name.suffix('_round_03')
-    ,pl.col('age').name.prefix('original_')
+    age_01 = pl.col('age').round(0)
+    ,pl.col('age').round(0).alias('age_02')
+    ,pl.col('age').round(0).name.suffix('_03')
+    ,pl.col('age').name.prefix('org_')
 )
 ```
 :::
 
-:::{.cheat title="Conditional Custom Column(s)"}
+:::{.cheat title="Conditional Column(s)"}
 ```
 lf.select(
     pl.when(
@@ -133,5 +198,46 @@ lf.select(
     .otherwise('Fail')
     .alias('result')
 )
+```
+:::
+
+\titletext{Functions}
+:::{.cheat title="User-defined"}
+```
+def sqrd(lf: pl.LazyFrame, col_name: str) ->
+pl.LazyFrame:
+    return (
+        lf.with_columns(
+            pl.col(col_name) ** 2
+        )
+    )
+lf.pipe(
+    sqrd
+    ,col_name = 'age'
+)
+```
+:::
+
+:::{.cheat title="Lambda"}
+```
+lf.with_columns(
+    lf.pipe(
+        lambda temp_df: pl.col("age") ** 2
+    )
+)
+
+```
+:::
+
+\titletext{Statistics}
+:::{.cheat title="XXX"}
+```
+xxx
+```
+:::
+
+:::{.cheat title="XXX"}
+```
+xxx
 ```
 :::

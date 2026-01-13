@@ -13,11 +13,7 @@
 \usepackage{mathtools}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
-\makeatletter
-
-\newcommand*\bigcdot{\mathpalette\bigcdot@{.5}}
-\newcommand*\bigcdot@[2]{\mathbin{\vcenter{\hbox{\scalebox{#2}{$\m@th#1\bullet$}}}}}
-\makeatother
+\usepackage[hidelinks]{hyperref}
 
 \title{$title$}
 
@@ -29,3 +25,8 @@
 \parindent0pt
 \parskip2pt
 \newcommand{\hr}{\centerline{\rule{3.5in}{1pt}}}
+\newcommand{\titletext}[1]{%
+    {\fontsize{14}{17}\selectfont \textbf{#1}}
+    \vspace{5pt}
+}
+
