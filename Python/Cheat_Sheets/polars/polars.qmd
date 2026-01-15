@@ -188,14 +188,15 @@ lf.with_columns(
 ```
 lf.select(
     pl.when(
-        pl.col('score') > 80
+        (pl.col('score') > 80)
+        & (pl.col('age') > 30)
     )
-    .then('Pass')
+    .then(pl.lit('Pass'))
     .when(
         pl.col('score') > 60
     )
-    .then('Pending')
-    .otherwise('Fail')
+    .then(pl.lit('Pending'))
+    .otherwise(pl.lit('Fail'))
     .alias('result')
 )
 ```
