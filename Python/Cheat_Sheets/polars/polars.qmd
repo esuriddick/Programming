@@ -13,10 +13,10 @@ format:
 :::{.cheat title="DataFrame"}
 ```
 df = pl.DataFrame({
-    "id": [1, 2, 3, 4]
-    ,"name": ["Alice", "Bob", "Charlie", "Diana"]
-    ,"age": [25, 30, 35, 28]
-    ,"score": [85.5, 90.0, 78.3, 92.1]
+    'id': [1, 2, 3, 4]
+    ,'name': ["Alice", "Bob", "Charlie", "Diana"]
+    ,'age': [25, 30, 35, 28]
+    ,'score': [85.5, 90.0, 78.3, 92.1]
 })
 ```
 :::
@@ -24,10 +24,10 @@ df = pl.DataFrame({
 :::{.cheat title="LazyFrame"}
 ```
 lf = pl.LazyFrame({
-    "id": [1, 2, 3, 4]
-    ,"name": ["Alice", "Bob", "Charlie", "Diana"]
-    ,"age": [25, 30, 35, 28]
-    ,"score": [85.5, 90.0, 78.3, 92.1]
+    'id': [1, 2, 3, 4]
+    ,'name': ["Alice", "Bob", "Charlie", "Diana"]
+    ,'age': [25, 30, 35, 28]
+    ,'score': [85.5, 90.0, 78.3, 92.1]
 })
 ```
 :::
@@ -212,6 +212,7 @@ pl.LazyFrame:
             pl.col(col_name) ** 2
         )
     )
+    
 lf.pipe(
     sqrd
     ,col_name = 'age'
@@ -227,6 +228,103 @@ lf.with_columns(
     )
 )
 
+```
+:::
+
+\columnbreak
+
+\titletext{Missing Values}
+:::{.cheat title="Create"}
+```
+lf.with_columns(
+    null_column = pl.lit(None)
+)
+```
+:::
+
+:::{.cheat title="Count"}
+```
+lf.null_count()
+
+lf.select(
+    pl.all().null_count()
+)
+```
+:::
+
+:::{.cheat title="Find"}
+```
+lf.select(
+    pl.col('name')
+    ,is_null = pl.col('name').is_null()
+    ,is_not_null = pl.col('name').is_not_null()
+)
+```
+:::
+
+:::{.cheat title="Filter"}
+```
+lf.filter(
+    pl.col('name').is_not_null(),
+)
+
+# At least 1 value not null
+lf.filter(
+    pl.any_horizontal(pl.all().is_not_null())
+)
+
+# All values non-null
+lf.filter(
+    pl.all_horizontal(pl.all().is_not_null())
+)
+```
+:::
+
+:::{.cheat title="Drop"}
+```
+# Observations with only null values dropped
+lf.drop_nulls()
+
+# Obs. with null values in subset are dropped
+lf.drop_nulls(subset = ['name', 'age'])
+```
+:::
+
+:::{.cheat title="Imputation"}
+```
+lf.with_columns(
+    pl.all().fill_null(
+        value = Any / Expr / None (default)
+        ,strategy = FillNullStrategy / None (default)
+        ,limit = int / None (default)
+    )
+    .name.suffix("_new")
+)
+```
+`strategy` may be equal to ‘forward’, ‘backward’, ‘min’, ‘max’, ‘mean’, ‘zero’ or ‘one’.
+```
+# With respect to groups
+lf.with_columns(
+    pl.all().fill_null(
+        strategy = 'forward'
+    )
+    .over('group-column-name')
+    .name.suffix('_filled')
+)
+
+# Miscellaneous
+lf.with_columns(
+    pl.col('age').fill_null(pl.median('score'))
+    ,pl.col('score').fill_null(pl.col('age'))
+)
+
+lf.with_columns(
+    new_col = pl.coalesce(['age', 'score', 9.0])
+)
+
+lf.with_columns(
+    pl.all().interpolate().name.suffix("_new")
+)
 ```
 :::
 
