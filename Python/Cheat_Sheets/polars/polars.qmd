@@ -340,3 +340,100 @@ xxx
 xxx
 ```
 :::
+
+\titletext{Text Manipulation}
+:::{.cheat title="Change Casing"}
+```
+lf.select(
+    pl.col('name').str.to_uppercase()
+)
+```
+:::
+
+:::{.cheat title="Length of Text"}
+```
+lf.select(
+    len_chars = pl.col('name').str.len_chars()
+    ,len_bytes = pl.col('name').str.len_bytes()
+)
+```
+:::
+
+:::{.cheat title="Whitespaces"}
+```
+lf.select(
+    lead_trail = pl.col('name').str.strip_chars()
+    ,lead = pl.col('name').str.strip_chars_start()
+    ,trail = pl.col('name').str.strip_chars_end()
+)
+```
+:::
+
+:::{.cheat title="Padding"}
+```
+pl.LazyFrame(
+    {
+        "foo": ["1", "10", "100"]
+    }
+)
+.select(
+    pl.col("foo").str.zfill(3)
+)
+```
+:::
+
+:::{.cheat title="Split"}
+```
+lf.with_columns(
+    pl.col('name').str.split(' ')
+)
+```
+To convert the list of words from the `split` function to one row per word:
+```
+lf.with_columns(
+    pl.col('name').str.split(' ')
+).explode('name')
+```
+:::
+
+:::{.cheat title="Concatenate / Merge"}
+```
+lf.with_columns(
+    new_col = pl.concat.str(
+        [
+            pl.col('name')
+            ,pl.col('age')
+        ]
+        ,separator = '_'
+    )
+)
+```
+:::
+
+\titletext{Miscellaneous}
+:::{.cheat title="DataFrame Size"}
+```
+df.estimated_size(unit = SizeUnit)
+```
+The values for `SizeUnit` accepted are 'b' (default), 'kb', 'mb', 'gb', 'tb'.
+:::
+
+:::{.cheat title="Categorical dtype"}
+Use `pl.Categorical` for string columns with repeated values (it’s faster and saves memory compared to `pl.String`). The column looks the same as before, but Polars stores it as integers with a mapping back to the original strings. **Note**: `pl.Categorical` can only be applied to columns of `pl.String` dtype.
+```
+df.with_columns(
+    name_cat = pl.col('name').cast(pl.Categorical)
+)
+.with_columns(
+    name_int = pl.col('name_cat').to_physical()
+)
+```
+By default, sorting uses the integer values. For alphabetical sorting, add `ordering='lexical'`:
+```
+df.with_columns(
+    name_cat = pl.col('name').cast(
+        pl.Categorical(ordering = 'lexical')
+    )
+)
+```
+:::
