@@ -328,10 +328,36 @@ lf.with_columns(
 ```
 :::
 
-\titletext{Statistics}
-:::{.cheat title="XXX"}
+\titletext{Grouping}
+:::{.cheat title="Count number of observations"}
 ```
-xxx
+lf.select(
+    pl.col('score').value_counts(
+        sort = bool (default: None)
+    )
+)
+```
+:::
+
+:::{.cheat title="Group By"}
+```
+lf.group_by([pl.col('name'), pl.col('age')])
+.agg(
+    pl.col(pl.Float64).mean().name.suffix('_avg')
+)
+
+lf.with_row_index().group_by('index')
+.mean()
+```
+:::
+
+\titletext{Merge DataFrames}
+:::{.cheat title="Concatenate"}
+```
+pl.concat(
+    [lf, lf]
+    ,how = 'vertical'
+)
 ```
 :::
 
@@ -371,13 +397,8 @@ lf.select(
 
 :::{.cheat title="Padding"}
 ```
-pl.LazyFrame(
-    {
-        "foo": ["1", "10", "100"]
-    }
-)
-.select(
-    pl.col("foo").str.zfill(3)
+lf.select(
+    pl.col('age').str.zfill(3)
 )
 ```
 :::
