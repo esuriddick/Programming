@@ -1,28 +1,7 @@
-# Objective
-The aim of this repository is to share some of the work that I have developed in different programming languages (R, Python, etc.) that may be useful for educational or professional purposes.
+# Warning
+This repository has been migrated to [Codeberg](https://codeberg.org/esuriddick/programming). In case you are here looking for the latest version of my Krita plugins to import and export DDS files, you can find them [HERE](https://codeberg.org/esuriddick/programming/src/branch/main/Python/Krita).
 
-# Index
-The following work is currently available within this repository:
-1. <b>R</b>
-   * Monte-Carlo Simulator
-   * Password Strength Estimator (zxcvbn)
-   * Transition Matrix
-   * Tree Diagram
-
-2. <b>Python</b>
-   * Python Data Science Cheat Sheet
-   * Spheres of Power and Might Character Generator (D&D 5th Edition)
-   * Modern Portfolio Theory (mostly based on the following article: https://www.kenwuyang.com/en/post/portfolio-optimization-with-python/#libraries-and-modules)
-   * Calculator
-   * Killer ranking model (for videogame Dead by Daylight)
-   * Local / Offline Large Language Model
-   * DDS File Importer / Exporter for Krita
-   * (Bi-directional) Stepwise Regression
-   * Texture Packing Tool
-   * Texture Resizing Tool
-
-3. <b>SAS</b>
-   * SAS Base Cheat Sheet
+This repository has been archived in GitHub and it will no longer be actively maintained in it.
 
 # License
 All of the work shared in this repository is under the <a href ="https://choosealicense.com/licenses/gpl-3.0/">GNU General Public License v3.0</a>.
